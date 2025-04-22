@@ -62,6 +62,9 @@ class Simulation:
         Actions - список действий, исполняемых перед
         стартом симуляции или на каждом ходу"""
 
+    def __init__(self, width: int, height: int):
+        self.map = Map(width, height)
+        self._counter = 0
 
     def next_turn(self):
         """ росимулировать и отрендерить один ход"""

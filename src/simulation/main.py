@@ -30,7 +30,7 @@ class Predator(Creature):
     pass
 
 
-@dataclass
+@dataclass(frozen=True)
 class Coordinates:
     x: int
     y: int

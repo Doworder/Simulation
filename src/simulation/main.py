@@ -75,3 +75,29 @@ class Simulation:
     def pause_simulation(self):
         """ - приостановить бесконечный цикл симуляции и рендеринга"""
 
+    def map_renderer(self):
+        width = self.map.width
+        height = self.map.height
+        rendering_symbols = {
+            Predator: 'P',
+            Herbivore: 'H',
+            Grass: 'G',
+            Rock: 'R',
+            Tree: 'T'
+        }
+
+        for i in range(height):
+            for j in range(width):
+                coord = Coordinates(i, j)
+                if coord not in self.map.entities:
+                    print('*', end='')
+                else:
+                    print(rendering_symbols[self.map.entities[coord]], end='')
+            print()
+
+
+if __name__ == '__main__':
+    world = Simulation(10, 10)
+    print(world.__dict__)
+    print(world.map.__dict__)
+    world.map_renderer()

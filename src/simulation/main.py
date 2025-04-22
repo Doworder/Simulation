@@ -1,5 +1,6 @@
 from abc import ABC
 from dataclasses import dataclass
+from random import randint
 
 
 class Entity(ABC):
@@ -98,6 +99,13 @@ class Simulation:
 
 if __name__ == '__main__':
     world = Simulation(10, 10)
+    for entity in [Grass, Rock, Tree, Herbivore, Predator]:
+        for i in range(10):
+            coord = Coordinates(randint(0, 9), randint(0, 9))
+            if coord in world.map.entities:
+                continue
+            world.map.add_entity(coord, entity)
+
     print(world.__dict__)
     print(world.map.__dict__)
     world.map_renderer()

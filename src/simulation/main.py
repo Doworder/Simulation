@@ -1,4 +1,5 @@
 from abc import ABC
+from dataclasses import dataclass
 
 
 class Entity(ABC):
@@ -29,7 +30,29 @@ class Predator(Creature):
     pass
 
 
+@dataclass
+class Coordinates:
+    x: int
+    y: int
+
+
 class Map:
+    def __init__(self, width: int, height: int):
+        self.width = width
+        self.height = height
+        self.entities = {}
+
+    def get_entity(self, coordinates: Coordinates) -> Entity:
+        return self.entities[coordinates]
+
+    def add_entity(self, coordinates: Coordinates, entity: Entity) -> None:
+        self.entities[coordinates] = entity
+
+    def remove_entity(self, coordinates: Coordinates):
+        if coordinates in self.entities:
+            del self.entities[coordinates]
+
+
 class Simulation:
     """Главный класс приложения, включает в себя:
 

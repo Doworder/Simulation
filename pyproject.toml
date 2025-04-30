@@ -13,3 +13,6 @@ authors = [
 description = "My second pet project from Sergey Zhukov's roadmap"
 readme = "README.md"
 license = { text = "MIT" }
+
+[tool.setuptools]
+package-dir = {"" = "src"}

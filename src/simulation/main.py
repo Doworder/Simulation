@@ -38,7 +38,10 @@ class Herbivore(Creature):
 
 
 class Predator(Creature):
-    pass
+    def __init__(self, speed: int, health: int, attack_power: int):
+        self.speed = speed
+        self.hp = health
+        self.ap = attack_power
 
 
 @dataclass(frozen=True)

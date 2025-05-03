@@ -20,7 +20,12 @@ class Tree(Entity):
 
 
 class Creature(Entity):
-    pass
+    speed: int = 0
+    hp: int = 0
+
+    @abstractmethod
+    def make_move(self):
+        pass
 
 
 class Herbivore(Creature):
@@ -101,6 +106,25 @@ class Actions(ABC):
     @abstractmethod
     def do(self) -> None:
         pass
+
+
+class InitAction(Actions):
+    def __init__(self, entity: Entity):
+        self.entity = entity
+
+    def do(self, spawn_coef: float, map: Map) -> None:
+        spawn_limit: int = int(map.width * map.height * spawn_coef)
+        while spawn_limit:
+            coordinate = Coordinates(randint(0, map.width - 1), randint(0, map.height - 1))
+            if coordinate in map.entities:
+                continue
+            map.add_entity(coordinate, self.entity)
+            spawn_limit -= 1
+
+
+class SpawnEntity(Actions):
+    def do(self, entity) -> Entity:
+        return entity
 
 
 if __name__ == '__main__':

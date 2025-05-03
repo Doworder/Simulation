@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from random import randint
 
@@ -95,6 +95,12 @@ class Simulation:
                 else:
                     print(rendering_symbols[self.map.entities[coord]], end='')
             print()
+
+
+class Actions(ABC):
+    @abstractmethod
+    def do(self) -> None:
+        pass
 
 
 if __name__ == '__main__':

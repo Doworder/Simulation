@@ -79,6 +79,9 @@ class Simulation:
         Actions - список действий, исполняемых перед
         стартом симуляции или на каждом ходу"""
 
+    init_actions: list = []
+    turn_actions: list = []
+
     def __init__(self, width: int, height: int):
         self.map = Map(width, height)
         self._counter = 0

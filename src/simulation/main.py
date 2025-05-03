@@ -29,10 +29,12 @@ class Creature(Entity):
 
 
 class Herbivore(Creature):
-    pass
     def __init__(self, speed: int, health: int):
         self.speed = speed
         self.hp = health
+
+    def make_move(self):
+        """Выполнить ход, либо съесть травы"""
 
 
 class Predator(Creature):

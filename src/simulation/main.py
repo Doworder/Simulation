@@ -30,6 +30,9 @@ class Creature(Entity):
 
 class Herbivore(Creature):
     pass
+    def __init__(self, speed: int, health: int):
+        self.speed = speed
+        self.hp = health
 
 
 class Predator(Creature):

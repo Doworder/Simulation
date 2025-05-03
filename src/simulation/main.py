@@ -43,6 +43,9 @@ class Predator(Creature):
         self.hp = health
         self.ap = attack_power
 
+    def make_move(self):
+        """Выполнить ход, атаковать"""
+
 
 @dataclass(frozen=True)
 class Coordinates:

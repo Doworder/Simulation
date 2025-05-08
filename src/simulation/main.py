@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from random import randint
+from collections import deque
+
+
 @dataclass(frozen=True)
 class Coordinates:
     x: int
@@ -47,6 +50,42 @@ class Creature(Entity):
     @abstractmethod
     def make_move(self):
         pass
+
+    def find_resource(self, map: Map, resource: Entity) -> Coordinates:
+        processed: list = []
+        coord: Coordinates = self.find_current_coord(self, map)
+        graph = self.make_graph(coord)
+        search_queue = deque()
+        search_queue += graph[coord]
+        while search_queue:
+            entity_coord = search_queue.popleft()
+            if entity_coord in processed:
+                continue
+
+            processed.append(entity_coord)
+
+            if map.entities.get(entity_coord) == resource:
+                return entity_coord
+
+            graph_current_coord = self.make_graph(entity_coord)
+            search_queue += graph_current_coord[entity_coord]
+
+
+
+    @staticmethod
+    def find_current_coord(value, map: Map):
+        """Возвращает значение координат объекта value из map"""
+        for coord, entity in map.entities:
+            if entity == value:
+                return coord
+            return "There is no such Coordinates"
+
+    @staticmethod
+    def make_graph(coords: Coordinates) -> dict:
+        return {coords: [Coordinates(coords.x - 1, coords.y + 1), Coordinates(coords.x, coords.y + 1),
+                         Coordinates(coords.x + 1, coords.y + 1), Coordinates(coords.x - 1, coords.y),
+                         Coordinates(coords.x + 1, coords.y), Coordinates(coords.x - 1, coords.y - 1),
+                         Coordinates(coords.x, coords.y - 1), Coordinates(coords.x + 1, coords.y - 1)]}
 
 
 class Herbivore(Creature):

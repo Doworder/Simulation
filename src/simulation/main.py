@@ -1,10 +1,31 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from random import randint
+@dataclass(frozen=True)
+class Coordinates:
+    x: int
+    y: int
 
 
 class Entity(ABC):
     pass
+
+
+class Map:
+    def __init__(self, width: int, height: int):
+        self.width = width
+        self.height = height
+        self.entities: dict[] = {}
+
+    def get_entity(self, coordinates: Coordinates) -> Entity:
+        return self.entities[coordinates]
+
+    def add_entity(self, coordinates: Coordinates, entity: Entity) -> None:
+        self.entities[coordinates] = entity
+
+    def remove_entity(self, coordinates: Coordinates):
+        if coordinates in self.entities:
+            del self.entities[coordinates]
 
 
 class Grass(Entity):
@@ -45,29 +66,6 @@ class Predator(Creature):
 
     def make_move(self):
         """Выполнить ход, атаковать"""
-
-
-@dataclass(frozen=True)
-class Coordinates:
-    x: int
-    y: int
-
-
-class Map:
-    def __init__(self, width: int, height: int):
-        self.width = width
-        self.height = height
-        self.entities = {}
-
-    def get_entity(self, coordinates: Coordinates) -> Entity:
-        return self.entities[coordinates]
-
-    def add_entity(self, coordinates: Coordinates, entity: Entity) -> None:
-        self.entities[coordinates] = entity
-
-    def remove_entity(self, coordinates: Coordinates):
-        if coordinates in self.entities:
-            del self.entities[coordinates]
 
 
 class Simulation:

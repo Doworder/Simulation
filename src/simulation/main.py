@@ -76,12 +76,13 @@ class Creature(Entity):
 
 
     @staticmethod
-    def find_current_coord(value, map: Map):
+    def find_current_coord(value, map: Map) -> Coordinates|None:
         """Возвращает значение координат объекта value из map"""
         for coord, entity in map.entities:
             if entity == value:
                 return coord
-            return "There is no such Coordinates"
+            raise ValueError("There is no such Coordinates")
+        return None
 
     @staticmethod
     def get_neighbors(coords: Coordinates) -> list:

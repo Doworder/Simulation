@@ -18,7 +18,7 @@ class Map:
     def __init__(self, width: int, height: int):
         self.width = width
         self.height = height
-        self.entities: dict[] = {}
+        self.entities: dict = {}
 
     def get_entity(self, coordinates: Coordinates) -> Entity:
         return self.entities[coordinates]
@@ -51,12 +51,12 @@ class Creature(Entity):
     def make_move(self):
         pass
 
-    def find_resource(self, map: Map, resource: Entity) -> Coordinates:
+    def find_resource(self, map: Map, resource: Entity) -> Coordinates|None:
         processed: list = []
         coord: Coordinates = self.find_current_coord(self, map)
-        graph = self.make_graph(coord)
-        search_queue = deque()
-        search_queue += graph[coord]
+        graph: dict[Coordinates, list[Coordinates]] = {}
+        search_queue: deque[Coordinates] = deque()
+        search_queue.append(coord)
         while search_queue:
             entity_coord = search_queue.popleft()
             if entity_coord in processed:
@@ -67,8 +67,11 @@ class Creature(Entity):
             if map.entities.get(entity_coord) == resource:
                 return entity_coord
 
-            graph_current_coord = self.make_graph(entity_coord)
-            search_queue += graph_current_coord[entity_coord]
+            neiborgs = self.get_neighbors(entity_coord)
+            search_queue += neiborgs
+            graph[entity_coord] = neiborgs
+
+        return None
 
 
 
@@ -81,11 +84,11 @@ class Creature(Entity):
             return "There is no such Coordinates"
 
     @staticmethod
-    def make_graph(coords: Coordinates) -> dict:
-        return {coords: [Coordinates(coords.x - 1, coords.y + 1), Coordinates(coords.x, coords.y + 1),
-                         Coordinates(coords.x + 1, coords.y + 1), Coordinates(coords.x - 1, coords.y),
-                         Coordinates(coords.x + 1, coords.y), Coordinates(coords.x - 1, coords.y - 1),
-                         Coordinates(coords.x, coords.y - 1), Coordinates(coords.x + 1, coords.y - 1)]}
+    def get_neighbors(coords: Coordinates) -> list:
+        return [Coordinates(coords.x, coords.y+1),
+                Coordinates(coords.x+1, coords.y),
+                Coordinates(coords.x, coords.y-1),
+                Coordinates(coords.x-1, coords.y)]
 
 
 class Herbivore(Creature):

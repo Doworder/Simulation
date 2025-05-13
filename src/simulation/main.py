@@ -115,8 +115,16 @@ class Predator(Creature):
         self.hp = health
         self.ap = attack_power
 
-    def make_move(self):
+    def make_move(self, map: Map):
         """Выполнить ход, атаковать"""
+        path: list = self.find_path_to_resource(map, Herbivore)
+        if len(path) <= self.speed:
+            current_entity = map.entities.pop(self.find_current_coord(self, map))
+            map.entities[path[-2]] = current_entity
+            """Атаковать"""
+
+        current_entity = map.entities.pop(self.find_current_coord(self, map))
+        map.entities[path[self.speed]] = current_entity
 
 
 class Simulation:

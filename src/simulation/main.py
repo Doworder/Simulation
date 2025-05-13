@@ -78,7 +78,7 @@ class Creature(Entity):
     @staticmethod
     def find_current_coord(value, map: Map) -> Coordinates|None:
         """Возвращает значение координат объекта value из map"""
-        for coord, entity in map.entities:
+        for coord, entity in map.entities.items():
             if entity == value:
                 return coord
             raise ValueError("There is no such Coordinates")

@@ -51,25 +51,27 @@ class Creature(Entity):
     def make_move(self):
         pass
 
-    def find_resource(self, map: Map, resource: Entity) -> Coordinates|None:
+    def find_path_to_resource(self, map: Map, resource: Entity) -> list[Coordinates] | None:
         processed: list = []
         coord: Coordinates = self.find_current_coord(self, map)
-        graph: dict[Coordinates, list[Coordinates]] = {}
         search_queue: deque[Coordinates] = deque()
-        search_queue.append(coord)
+        search_queue.append((coord, []))
         while search_queue:
-            entity_coord = search_queue.popleft()
+            entity_coord, path_to_resource = search_queue.popleft()
             if entity_coord in processed:
                 continue
 
             processed.append(entity_coord)
 
-            if map.entities.get(entity_coord) == resource:
-                return entity_coord
+            if isinstance(map.entities.get(entity_coord), resource):
+                return path_to_resource
 
-            neiborgs = self.get_neighbors(entity_coord)
+            if isinstance(map.entities.get(entity_coord), Entity):
+                if entity_coord is not coord:
+                    continue
+
+            neiborgs = self.get_neighbors(entity_coord, path_to_resource, map)
             search_queue += neiborgs
-            graph[entity_coord] = neiborgs
 
         return None
 

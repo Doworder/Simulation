@@ -102,8 +102,11 @@ class Herbivore(Creature):
         self.speed = speed
         self.hp = health
 
-    def make_move(self):
+    def make_move(self, map: Map):
         """Выполнить ход, либо съесть травы"""
+        path: list = self.find_path_to_resource(map, Grass)
+        current_entity = map.entities.pop(self.find_current_coord(self, map))
+        map.entities[path[self.speed]] = current_entity
 
 
 class Predator(Creature):

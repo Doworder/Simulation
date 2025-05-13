@@ -85,11 +85,14 @@ class Creature(Entity):
         return None
 
     @staticmethod
-    def get_neighbors(coords: Coordinates) -> list:
-        return [Coordinates(coords.x, coords.y+1),
-                Coordinates(coords.x+1, coords.y),
-                Coordinates(coords.x, coords.y-1),
-                Coordinates(coords.x-1, coords.y)]
+    def get_neighbors(coords: Coordinates, path: list, map: Map) -> list:
+        neighbors_coords = [
+            (coords.x, coords.y+1),
+            (coords.x+1, coords.y),
+            (coords.x, coords.y-1),
+            (coords.x-1, coords.y)
+        ]
+        return [(Coordinates(x, y), path + [coords]) for x, y in neighbors_coords if (0 <= x < map.width and 0 <= y < map.height)]
 
 
 class Herbivore(Creature):

@@ -108,6 +108,9 @@ class Herbivore(Creature):
         current_entity = map.entities.pop(self.find_current_coord(self, map))
         map.entities[path[self.speed]] = current_entity
 
+    def attacked(self, attack_power: int):
+        self.hp -= attack_power
+
 
 class Predator(Creature):
     def __init__(self, speed: int, health: int, attack_power: int):

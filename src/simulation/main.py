@@ -202,6 +202,11 @@ class SpawnEntity(Actions):
         return entity
 
 
+class DelEntity(Actions):
+    def do(self, entity):
+        del entity
+
+
 if __name__ == '__main__':
     world = Simulation(10, 10)
     entities = [Grass, Rock, Tree, Herbivore, Predator]

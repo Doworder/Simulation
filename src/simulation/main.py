@@ -207,6 +207,18 @@ class DelEntity(Actions):
         del entity
 
 
+class FindDeadEntity(Actions):
+    def is_dead(self, entity) -> bool:
+        if entity.hp > 0:
+            return False
+        return True
+
+    def do(self, map: Map):
+        for entity in map.entities.values():
+            if self.is_dead(entity):
+                DelEntity.do(entity)
+
+
 if __name__ == '__main__':
     world = Simulation(10, 10)
     entities = [Grass, Rock, Tree, Herbivore, Predator]

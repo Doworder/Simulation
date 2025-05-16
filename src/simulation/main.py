@@ -149,6 +149,10 @@ class Simulation:
         InitAction(Herbivore(1, 5)),
         InitAction(Predator(2, 10, 3))
     ]
+    turn_actions: list = [
+        FindDeadEntity,
+        MoveEntity
+    ]
 
     def __init__(self, width: int, height: int):
         self.map = Map(width, height)

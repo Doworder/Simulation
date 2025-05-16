@@ -44,8 +44,9 @@ class Tree(Entity):
 
 
 class Creature(Entity):
-    speed: int = 0
-    hp: int = 0
+    def __init__(self, speed: int, health: int):
+        self.speed = speed
+        self.hp = health
 
     @abstractmethod
     def make_move(self):
@@ -99,8 +100,7 @@ class Creature(Entity):
 
 class Herbivore(Creature):
     def __init__(self, speed: int, health: int):
-        self.speed = speed
-        self.hp = health
+        super().__init__(speed, health)
 
     def make_move(self, map: Map):
         """Выполнить ход, либо съесть травы"""
@@ -114,8 +114,7 @@ class Herbivore(Creature):
 
 class Predator(Creature):
     def __init__(self, speed: int, health: int, attack_power: int):
-        self.speed = speed
-        self.hp = health
+        super().__init__(speed, health)
         self.ap = attack_power
 
     def make_move(self, map: Map):

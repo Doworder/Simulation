@@ -123,7 +123,7 @@ class Predator(Creature):
         if len(path) <= self.speed:
             current_entity = map.entities.pop(self.find_current_coord(self, map))
             map.entities[path[-2]] = current_entity
-            """Атаковать"""
+            map.entities[path[-1]].attacked(self.ap)
 
         current_entity = map.entities.pop(self.find_current_coord(self, map))
         map.entities[path[self.speed]] = current_entity

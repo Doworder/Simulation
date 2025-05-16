@@ -202,6 +202,12 @@ class SpawnEntity(Actions):
         return entity
 
 
+class MoveEntity(Actions):
+    def do(self, entity) -> None:
+        for entity in map.entities.values():
+            entity.make_move()
+
+
 class DelEntity(Actions):
     def do(self, entity):
         del entity

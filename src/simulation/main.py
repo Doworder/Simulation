@@ -206,6 +206,10 @@ class Simulation:
 
     def next_turn(self):
         """ Просимулировать и отрендерить один ход"""
+        for action in self.turn_actions:
+            action.do(self.map)
+
+        self.map_renderer()
 
     def start_simulation(self):
         """- запустить бесконечный цикл симуляции и рендеринга"""

@@ -131,63 +131,6 @@ class Predator(Creature):
         map.entities[path[self.speed]] = current_entity
 
 
-class Simulation:
-    """Главный класс приложения, включает в себя:
-
-        Карту
-        Счётчик ходов
-        Рендер поля
-        Actions - список действий, исполняемых перед
-        стартом симуляции или на каждом ходу"""
-
-    init_actions: list = []
-    turn_actions: list = []
-    init_actions: list = [
-        InitAction(Grass()),
-        InitAction(Rock()),
-        InitAction(Tree()),
-        InitAction(Herbivore(1, 5)),
-        InitAction(Predator(2, 10, 3))
-    ]
-    turn_actions: list = [
-        FindDeadEntity,
-        MoveEntity
-    ]
-
-    def __init__(self, width: int, height: int):
-        self.map = Map(width, height)
-        self._counter = 0
-
-    def next_turn(self):
-        """ Просимулировать и отрендерить один ход"""
-
-    def start_simulation(self):
-        """- запустить бесконечный цикл симуляции и рендеринга"""
-
-    def pause_simulation(self):
-        """ - приостановить бесконечный цикл симуляции и рендеринга"""
-
-    def map_renderer(self):
-        width = self.map.width
-        height = self.map.height
-        rendering_symbols = {
-            Predator: 'P ',
-            Herbivore: 'H ',
-            Grass: 'G ',
-            Rock: 'R ',
-            Tree: 'T '
-        }
-
-        for i in range(height):
-            for j in range(width):
-                coord = Coordinates(i, j)
-                if coord not in self.map.entities:
-                    print('* ', end='')
-                else:
-                    print(rendering_symbols[(self.map.entities[coord]).__class__], end='')
-            print()
-
-
 class Actions(ABC):
     @abstractmethod
     def do(self) -> None:
@@ -234,6 +177,61 @@ class FindDeadEntity(Actions):
         for entity in map.entities.values():
             if self.is_dead(entity):
                 DelEntity.do(entity)
+
+
+class Simulation:
+    """Главный класс приложения, включает в себя:
+
+        Карту
+        Счётчик ходов
+        Рендер поля
+        Actions - список действий, исполняемых перед
+        стартом симуляции или на каждом ходу"""
+
+    init_actions: list = [
+        InitAction(Grass()),
+        InitAction(Rock()),
+        InitAction(Tree()),
+        InitAction(Herbivore(1, 5)),
+        InitAction(Predator(2, 10, 3))
+    ]
+    turn_actions: list = [
+        FindDeadEntity,
+        MoveEntity
+    ]
+
+    def __init__(self, width: int, height: int):
+        self.map = Map(width, height)
+        self._counter = 0
+
+    def next_turn(self):
+        """ Просимулировать и отрендерить один ход"""
+
+    def start_simulation(self):
+        """- запустить бесконечный цикл симуляции и рендеринга"""
+
+    def pause_simulation(self):
+        """ - приостановить бесконечный цикл симуляции и рендеринга"""
+
+    def map_renderer(self):
+        width = self.map.width
+        height = self.map.height
+        rendering_symbols = {
+            Predator: 'P ',
+            Herbivore: 'H ',
+            Grass: 'G ',
+            Rock: 'R ',
+            Tree: 'T '
+        }
+
+        for i in range(height):
+            for j in range(width):
+                coord = Coordinates(i, j)
+                if coord not in self.map.entities:
+                    print('* ', end='')
+                else:
+                    print(rendering_symbols[(self.map.entities[coord]).__class__], end='')
+            print()
 
 
 if __name__ == '__main__':

@@ -213,6 +213,8 @@ class Simulation:
 
     def start_simulation(self):
         """- запустить бесконечный цикл симуляции и рендеринга"""
+        while True:
+            self.next_turn()
 
     def pause_simulation(self):
         """ - приостановить бесконечный цикл симуляции и рендеринга"""

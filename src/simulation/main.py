@@ -218,6 +218,7 @@ class Simulation:
 
     def pause_simulation(self):
         """ - приостановить бесконечный цикл симуляции и рендеринга"""
+        input('Нажмите Enter для продолжения...')
 
     def map_renderer(self):
         width = self.map.width

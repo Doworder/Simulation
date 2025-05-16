@@ -142,6 +142,13 @@ class Simulation:
 
     init_actions: list = []
     turn_actions: list = []
+    init_actions: list = [
+        InitAction(Grass()),
+        InitAction(Rock()),
+        InitAction(Tree()),
+        InitAction(Herbivore(1, 5)),
+        InitAction(Predator(2, 10, 3))
+    ]
 
     def __init__(self, width: int, height: int):
         self.map = Map(width, height)

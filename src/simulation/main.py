@@ -159,7 +159,8 @@ class SpawnEntity(Actions):
 class MoveEntity(Actions):
     def do(self, map: Map) -> None:
         for entity in map.entities.values():
-            entity.make_move()
+            if isinstance(entity, Creature):
+                entity.make_move(map)
 
 
 class DelEntity(Actions):

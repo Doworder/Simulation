@@ -243,36 +243,40 @@ class Simulation:
 
 if __name__ == '__main__':
     world = Simulation(10, 10)
-    entities = [Grass, Rock, Tree, Herbivore, Predator]
+    for action in world.init_actions:
+        action.do(0.1, world.map)
 
-    init_grass = InitAction(SpawnEntity().do(Grass()))
-    world.init_actions.append(init_grass)
-
-    init_rock = InitAction(SpawnEntity().do(Rock()))
-    world.init_actions.append(init_rock)
-
-    init_tree = InitAction(SpawnEntity().do(Tree()))
-    world.init_actions.append(init_tree)
-
-    init_herbivore = InitAction(SpawnEntity().do(Herbivore(1, 10)))
-    world.init_actions.append(init_herbivore)
-
-    init_predator = InitAction(SpawnEntity().do(Predator(3, 10, 5)))
-    world.init_actions.append(init_predator)
-
-    for init_action in world.init_actions:
-        init_action.do(0.1, world.map)
-
-    # def init_entities_on_map(entities: list, world: Simulation) -> None:
-    #     for entity in entities:
-    #         for _ in range(10):
-    #             coordinate = Coordinates(randint(0, 9), randint(0, 9))
-    #             if coordinate in world.map.entities:
-    #                 continue
-    #             world.map.add_entity(coordinate, entity)
-    #
-    # init_entities_on_map(entities, world)
-
-    print(world.__dict__)
-    print(world.map.__dict__)
     world.map_renderer()
+    world.next_turn()
+
+    # entities = [Grass, Rock, Tree, Herbivore, Predator]
+    #
+    # init_grass = InitAction(SpawnEntity().do(Grass()))
+    # world.init_actions.append(init_grass)
+    #
+    # init_rock = InitAction(SpawnEntity().do(Rock()))
+    # world.init_actions.append(init_rock)
+    #
+    # init_tree = InitAction(SpawnEntity().do(Tree()))
+    # world.init_actions.append(init_tree)
+    #
+    # init_herbivore = InitAction(SpawnEntity().do(Herbivore(1, 10)))
+    # world.init_actions.append(init_herbivore)
+    #
+    # init_predator = InitAction(SpawnEntity().do(Predator(3, 10, 5)))
+    # world.init_actions.append(init_predator)
+    #
+    # # for init_action in world.init_actions:
+    # #     init_action.do(0.1, world.map)
+    #
+    # world.map.add_entity(Coordinates(1,1), Herbivore(1, 10))
+    # world.map.add_entity(Coordinates(5,5), Grass())
+    # world.map.add_entity(Coordinates(1,4), Tree())
+    # entity: Creature = world.map.entities[Coordinates(1, 1)]
+    # path_to_res = entity.find_path_to_resource(world.map, Grass)
+    # # pprint(path_to_res)
+    # print(path_to_res)
+    #
+    # print(world.__dict__)
+    # print(world.map.__dict__)
+    # world.map_renderer()

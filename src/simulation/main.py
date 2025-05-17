@@ -196,8 +196,8 @@ class Simulation:
         InitAction(Predator(2, 10, 3))
     ]
     turn_actions: list = [
-        FindDeadEntity,
-        MoveEntity
+        FindDeadEntity(),
+        MoveEntity()
     ]
 
     def __init__(self, width: int, height: int):

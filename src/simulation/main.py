@@ -87,7 +87,6 @@ class Creature(Entity):
         for coord, entity in map.entities.items():
             if entity == value:
                 return coord
-            raise ValueError("There is no such Coordinates")
         return None
 
     @staticmethod

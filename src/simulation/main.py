@@ -157,6 +157,8 @@ class InitAction(Actions):
             if coordinate in map.entities:
                 continue
             map.add_entity(coordinate, self.entity)
+            if isinstance(self.entity, Creature):
+                map.creatures.add(self.entity)
             spawn_limit -= 1
 
 

@@ -76,7 +76,7 @@ class Creature(Entity):
             neiborgs = self.get_neighbors(entity_coord, path_to_resource, map)
             search_queue += neiborgs
 
-        return None
+        return [coord]
 
 
 

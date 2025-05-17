@@ -21,6 +21,7 @@ class Map:
         self.width = width
         self.height = height
         self.entities: dict = {}
+        self.creatures: set = set()
 
     def get_entity(self, coordinates: Coordinates) -> Entity:
         return self.entities[coordinates]

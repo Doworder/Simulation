@@ -175,8 +175,9 @@ class FindDeadEntity(Actions):
 
     def do(self, map: Map):
         for entity in map.entities.values():
-            if self.is_dead(entity):
-                DelEntity.do(entity)
+            if isinstance(entity, Creature):
+                if self.is_dead(entity):
+                    DelEntity.do(entity)
 
 
 class Simulation:

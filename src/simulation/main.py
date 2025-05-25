@@ -161,9 +161,34 @@ class InitAction(Actions):
             spawn_limit -= 1
 
 
-class SpawnEntity(Actions):
-    def do(self, entity) -> Entity:
-        return entity
+class SpawnRock(Actions):
+    @classmethod
+    def do(cls) -> Rock:
+        return Rock()
+
+
+class SpawnTree(Actions):
+    @classmethod
+    def do(cls) -> Tree:
+        return Tree()
+
+
+class SpawnGrass(Actions):
+    @classmethod
+    def do(cls) -> Grass:
+        return Grass()
+
+
+class SpawnHerbivore(Actions):
+    @classmethod
+    def do(cls) -> Herbivore:
+        return Herbivore(1, 10)
+
+
+class SpawnPredator(Actions):
+    @classmethod
+    def do(cls) -> Predator:
+        return Predator(3,10, 3)
 
 
 class MoveEntity(Actions):

@@ -210,13 +210,16 @@ class DelEntity(Actions):
 
 
 class FindDeadEntity(Actions):
+    def __init__(self, map: Map):
+        self.map = map
+
     def is_dead(self, entity) -> bool:
         if entity.hp > 0:
             return False
         return True
 
-    def do(self, map: Map):
-        for entity in map.entities.values():
+    def do(self):
+        for entity in self.map.entities.values():
             if isinstance(entity, Creature):
                 if self.is_dead(entity):
                     DelEntity.do(entity)

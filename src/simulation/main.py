@@ -202,8 +202,11 @@ class MoveEntity(Actions):
 
 
 class DelEntity(Actions):
-    def do(self, entity):
-        del entity
+    def __init__(self, entity: Entity):
+        self.entity = entity
+
+    def do(self):
+        del self.entity
 
 
 class FindDeadEntity(Actions):

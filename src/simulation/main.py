@@ -192,10 +192,13 @@ class SpawnPredator(Actions):
 
 
 class MoveEntity(Actions):
-    def do(self, map: Map) -> None:
-        for entity in map.creatures:
+    def __init__(self, map: Map):
+        self.map = map
+
+    def do(self) -> None:
+        for entity in self.map.creatures:
             if isinstance(entity, Creature):
-                entity.make_move(map)
+                entity.make_move(self.map)
 
 
 class DelEntity(Actions):

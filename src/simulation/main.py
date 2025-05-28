@@ -130,13 +130,17 @@ class Predator(Creature):
     def make_move(self, map: Map):
         """Выполнить ход, атаковать"""
         path: list = self.find_path_to_resource(map, Herbivore)
-        if len(path) <= self.speed:
+        if len(path) == 1:
+            map.entities.pop(path[0])
+
+        elif len(path) <= self.speed:
             current_entity = map.entities.pop(self.find_current_coord(self, map))
             map.entities[path[-2]] = current_entity
             map.entities[path[-1]].attacked(self.ap)
 
-        current_entity = map.entities.pop(self.find_current_coord(self, map))
-        map.entities[path[self.speed]] = current_entity
+        else:
+            current_entity = map.entities.pop(self.find_current_coord(self, map))
+            map.entities[path[self.speed]] = current_entity
 
 
 class Actions(ABC):

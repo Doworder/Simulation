@@ -309,7 +309,7 @@ class Simulation:
 if __name__ == '__main__':
     world = Simulation(10, 10)
     for action in world.init_actions:
-        action.do(0.1, world.map)
+        action.do()
 
     world.map_renderer()
     world.next_turn()

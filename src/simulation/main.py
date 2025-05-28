@@ -252,26 +252,27 @@ class Simulation:
         Actions - список действий, исполняемых перед
         стартом симуляции или на каждом ходу"""
 
-    init_actions: list = [
-        InitAction(Grass()),
-        InitAction(Rock()),
-        InitAction(Tree()),
-        InitAction(Herbivore(1, 5)),
-        InitAction(Predator(2, 10, 3))
-    ]
-    turn_actions: list = [
-        FindDeadEntity(),
-        MoveEntity()
-    ]
+
 
     def __init__(self, width: int, height: int):
         self.map = Map(width, height)
         self._counter = 0
+        self.init_actions: list = [
+            InitAction(0.05, self.map, Grass),
+            InitAction(0.05, self.map, Rock),
+            InitAction(0.05, self.map, Tree),
+            InitAction(0.05, self.map, Herbivore),
+            InitAction(0.05, self.map, Predator)
+        ]
+        self.turn_actions: list = [
+            FindDeadEntity(self.map),
+            MoveEntity(self.map)
+        ]
 
     def next_turn(self):
         """ Просимулировать и отрендерить один ход"""
         for action in self.turn_actions:
-            action.do(self.map)
+            action.do()
 
         self.map_renderer()
 

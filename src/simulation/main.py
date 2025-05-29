@@ -68,6 +68,7 @@ class Creature(Entity):
             processed.append(entity_coord)
 
             if isinstance(map.entities.get(entity_coord), resource):
+                path_to_resource.append(entity_coord)
                 return path_to_resource
 
             if isinstance(map.entities.get(entity_coord), Entity):

@@ -137,6 +137,10 @@ class Predator(Creature):
         path: list = self.find_path_to_resource(map, Herbivore)
         if len(path) == 1:
             map.entities.pop(path[0])
+            return
+
+        if len(path) == 2:
+            map.entities[path[-1]].attacked(self.ap)
 
         elif len(path) <= self.speed:
             current_entity = map.entities.pop(self.find_current_coord(self, map))

@@ -110,6 +110,10 @@ class Herbivore(Creature):
         path: list = self.find_path_to_resource(map, Grass)
         if len(path) == 1:
             map.entities.pop(path[0])
+            return
+
+        if len(path) == 2:
+            map.entities.pop(path[-1])
 
         elif len(path) <= self.speed:
             current_entity = map.entities.pop(self.find_current_coord(self, map))

@@ -242,10 +242,10 @@ class FindDeadEntity(Actions):
         return True
 
     def do(self):
-        for entity in self.map.entities.values():
-            if isinstance(entity, Creature):
-                if self.is_dead(entity):
-                    DelEntity.do(entity)
+        for entity in self.map.creatures:
+            if self.is_dead(entity):
+                self.map.creatures.discard(entity)
+                del self.map.entities[entity.find_current_coord(entity, self.map)]
 
 
 class Simulation:

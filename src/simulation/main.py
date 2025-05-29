@@ -141,7 +141,7 @@ class Predator(Creature):
 
         else:
             current_entity = map.entities.pop(self.find_current_coord(self, map))
-            map.entities[path[self.speed]] = current_entity
+            map.entities[path[self.speed - 1]] = current_entity
 
 
 class Actions(ABC):

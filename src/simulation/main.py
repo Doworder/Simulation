@@ -339,6 +339,37 @@ class Simulation:
             print()
 
 
+def processing_user_commands(object: Simulation) -> None:
+    while True:
+        pause_flag = False
+        user_input = input("""
+        Press (S, Enter) to start or (N, Enter) to one cicle
+        Press (P, Enter) to pause or (E, Enter) to exit""").lower()
+        match user_input:
+            case "e":
+                print("stop_flag = 'stop'")
+                object.stop_simulation()
+                break
+
+            case "p":
+                print("stop_flag = 'pause'")
+                pause_flag = True
+                object.pause_simulation()
+
+            case "n":
+                print("stop_flag = 'next'")
+                object.next_turn()
+
+            case "s":
+                if pause_flag:
+                    print("stop_flag = 'resume'")
+                    pause_flag = False
+                    object.resume_simulation()
+                else:
+                    print("stop_flag = 'start'")
+                    object.start_simulation()
+
+
 if __name__ == '__main__':
     world = Simulation(10, 10)
     for action in world.init_actions:

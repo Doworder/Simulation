@@ -329,14 +329,15 @@ class Simulation:
             Tree: 'T '
         }
 
-        for i in range(height):
-            for j in range(width):
+        for j in range(height):
+            for i in range(width):
                 coord = Coordinates(i, j)
                 if coord not in self.map.entities:
                     print('* ', end='')
                 else:
                     print(rendering_symbols[(self.map.entities[coord]).__class__], end='')
             print()
+        print(self._counter)
 
 
 def processing_user_commands(object: Simulation) -> None:

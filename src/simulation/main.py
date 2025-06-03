@@ -250,7 +250,7 @@ class FindDeadEntity(Actions):
         return True
 
     def do(self):
-        for entity in self.map.creatures:
+        for entity in self.map.creatures.copy():
             if self.is_dead(entity):
                 self.map.creatures.discard(entity)
                 del self.map.entities[entity.find_current_coord(entity, self.map)]

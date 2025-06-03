@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from random import randint
 from collections import deque
+from threading import Thread, Event
 
 
 @dataclass(frozen=True)
@@ -270,6 +271,9 @@ class Simulation:
     def __init__(self, width: int, height: int):
         self.map = Map(width, height)
         self._counter = 0
+        self._event = Event()
+        self._tread =None
+        self._simulation_flag = True
         self.init_actions: list = [
             InitAction(0.05, self.map, Grass),
             InitAction(0.05, self.map, Rock),
@@ -288,15 +292,31 @@ class Simulation:
             action.do()
 
         self.map_renderer()
+        self._counter += 1
+
+    def _next_turn_loop(self):
+        while self._simulation_flag:
+            self._event.wait()
+            self.next_turn()
+
 
     def start_simulation(self):
         """- запустить бесконечный цикл симуляции и рендеринга"""
-        while True:
-            self.next_turn()
+        self._event.set()
+        self._tread = Thread(target=self._next_turn_loop, daemon=True)
+        self._tread.start()
 
     def pause_simulation(self):
         """ - приостановить бесконечный цикл симуляции и рендеринга"""
-        input('Нажмите Enter для продолжения...')
+        self._event.clear()
+
+    def resume_simulation(self):
+        """продолжить цикл симуляции и рендеринга"""
+        self._event.set()
+
+    def stop_simulation(self):
+        """остановить бесконечный цикл симуляции и рендеринга"""
+        self._simulation_flag = False
 
     def map_renderer(self):
         width = self.map.width

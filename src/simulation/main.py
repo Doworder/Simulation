@@ -56,10 +56,10 @@ class Creature(Entity):
     def make_move(self):
         pass
 
-    def find_path_to_resource(self, map: Map, resource: Entity) -> list[Coordinates] | None:
+    def find_path_to_resource(self, map: Map, resource: type[Entity]) -> list[Coordinates] | None:
         processed: list = []
-        coord: Coordinates = self.find_current_coord(self, map)
-        search_queue: deque[Coordinates] = deque()
+        coord: Coordinates | None = self.find_current_coord(self, map)
+        search_queue: deque[tuple[Coordinates, list[Coordinates]]] = deque()
         search_queue.append((coord, []))
         while search_queue:
             entity_coord, path_to_resource = search_queue.popleft()
@@ -79,9 +79,7 @@ class Creature(Entity):
             neiborgs = self.get_neighbors(entity_coord, path_to_resource, map)
             search_queue += neiborgs
 
-        return [coord]
-
-
+        return None
 
     @staticmethod
     def find_current_coord(value, map: Map) -> Coordinates|None:

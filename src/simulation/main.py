@@ -53,7 +53,7 @@ class Creature(Entity):
         self.hp = health
 
     @abstractmethod
-    def make_move(self):
+    def make_move(self, map: Map) -> None:
         pass
 
     def find_path_to_resource(self, map: Map, resource: type[Entity]) -> list[Coordinates] | None:

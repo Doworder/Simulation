@@ -154,6 +154,11 @@ class EntityFactory:
     def create_entity(self) -> Entity: ...
 
 
+class RockFactory(EntityFactory):
+    def create_entity(self) -> Rock:
+        return Rock()
+
+
 class Actions(ABC):
     @abstractmethod
     def do(self) -> None:

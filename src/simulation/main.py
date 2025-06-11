@@ -159,6 +159,11 @@ class RockFactory(EntityFactory):
         return Rock()
 
 
+class TreeFactory(EntityFactory):
+    def create_entity(self) -> Tree:
+        return Tree()
+
+
 class Actions(ABC):
     @abstractmethod
     def do(self) -> None:

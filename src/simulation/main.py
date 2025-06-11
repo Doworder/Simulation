@@ -169,6 +169,16 @@ class GrassFactory(EntityFactory):
         return Grass()
 
 
+class HerbivoreFactory(EntityFactory):
+    def __init__(self, health: int, speed: int):
+        self.health = health
+        self.speed = speed
+        self.resource = Grass
+
+    def create_entity(self) -> Herbivore:
+        return Herbivore(self.speed, self.health)
+
+
 class Actions(ABC):
     @abstractmethod
     def do(self) -> None:

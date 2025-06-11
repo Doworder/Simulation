@@ -195,6 +195,22 @@ class Actions(ABC):
         pass
 
 
+class SpawnEntity(Actions):
+    def __init__(self, spawn_limit: int, world_map: Map, entity_factory: EntityFactory):
+        self.spawn_limit = spawn_limit
+        self.world_map = world_map
+        self.entity_factory = entity_factory
+
+    def do(self) -> None:
+        while self.spawn_limit:
+            entity = self.entity_factory.create_entity()
+            coordinate = Coordinates(randint(0, self.world_map.width - 1), randint(0, self.world_map.height - 1))
+            if coordinate in self.world_map.entities:
+                continue
+            self.world_map.add_entity(coordinate, entity)
+            self.spawn_limit -= 1
+
+
 class InitAction(Actions):
     def __init__(self, spawn_coef: float, map: Map, entity: Entity):
         self.entity = entity

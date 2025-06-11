@@ -327,16 +327,19 @@ class Simulation:
         self._tread =None
         self._simulation_flag = True
         self.init_actions: list = [
-            InitAction(0.05, self.map, Grass),
-            InitAction(0.05, self.map, Rock),
-            InitAction(0.05, self.map, Tree),
-            InitAction(0.05, self.map, Herbivore),
-            InitAction(0.05, self.map, Predator)
+            SpawnEntity(8, self.map, RockFactory()),
+            SpawnEntity(7, self.map, TreeFactory()),
+            SpawnEntity(15, self.map, GrassFactory()),
+            SpawnEntity(15, self.map, HerbivoreFactory(10, 1)),
+            SpawnEntity(10, self.map, PredatorFactory(10, 3, 3))
         ]
         self.turn_actions: list = [
             FindDeadEntity(self.map),
             MoveEntity(self.map)
         ]
+
+        for action in self.init_actions:
+            action.do()
 
     def next_turn(self):
         """ Просимулировать и отрендерить один ход"""

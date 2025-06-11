@@ -164,6 +164,11 @@ class TreeFactory(EntityFactory):
         return Tree()
 
 
+class GrassFactory(EntityFactory):
+    def create_entity(self) -> Grass:
+        return Grass()
+
+
 class Actions(ABC):
     @abstractmethod
     def do(self) -> None:

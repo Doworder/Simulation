@@ -149,6 +149,11 @@ class Predator(Creature):
             map.entities[path[self.speed]] = current_entity
 
 
+class EntityFactory:
+    @abstractmethod
+    def create_entity(self) -> Entity: ...
+
+
 class Actions(ABC):
     @abstractmethod
     def do(self) -> None:

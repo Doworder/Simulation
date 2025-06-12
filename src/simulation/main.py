@@ -53,13 +53,13 @@ class Creature(Entity):
         self.hp = health
 
     @abstractmethod
-    def make_move(self, map: Map) -> None:
+    def make_move(self, map_object: Map) -> None:
         pass
 
-    def find_path_to_resource(self, map: Map, resource: type[Entity]) -> list[Coordinates] | None:
+    def find_path_to_resource(self, map_object: Map, resource: type[Entity]) -> list[Coordinates] | None:
         processed: list = []
-        coord: Coordinates | None = self.find_current_coord(self, map)
-        search_queue: deque[tuple[Coordinates, list[Coordinates]]] = deque()
+        coord = self.find_current_coord(self, map_object)
+        search_queue = deque()  # type: ignore
         search_queue.append((coord, []))
         while search_queue:
             entity_coord, path_to_resource = search_queue.popleft()
@@ -68,11 +68,11 @@ class Creature(Entity):
 
             processed.append(entity_coord)
 
-            if isinstance(map.entities.get(entity_coord), resource):
+            if isinstance(map_object.entities.get(entity_coord), resource):
                 path_to_resource.append(entity_coord)
                 return path_to_resource
 
-            if isinstance(map.entities.get(entity_coord), Entity):
+            if isinstance(map_object.entities.get(entity_coord), Entity):
                 if entity_coord is not coord:
                     continue
 
@@ -82,44 +82,44 @@ class Creature(Entity):
         return None
 
     @staticmethod
-    def find_current_coord(value, map: Map) -> Coordinates|None:
-        """Возвращает значение координат объекта value из map"""
-        for coord, entity in map.entities.items():
+    def find_current_coord(value, map_object: Map) -> Coordinates | None:
+        """Возвращает значение координат объекта value из map_object"""
+        for coord, entity in map_object.entities.items():
             if entity == value:
                 return coord
         return None
 
     @staticmethod
-    def get_neighbors(coords: Coordinates, path: list, map: Map) -> list:
+    def get_neighbors(coords: Coordinates, path: list, map_object: Map) -> list:
         neighbors_coords = [
             (coords.x, coords.y+1),
             (coords.x+1, coords.y),
             (coords.x, coords.y-1),
             (coords.x-1, coords.y)
         ]
-        return [(Coordinates(x, y), path + [coords]) for x, y in neighbors_coords if (0 <= x < map.width and 0 <= y < map.height)]
+        return [(Coordinates(x, y), path + [coords]) for x, y in neighbors_coords if (0 <= x < map_object.width and 0 <= y < map_object.height)]
 
 
 class Herbivore(Creature):
     def __init__(self, speed: int, health: int):
         super().__init__(speed, health)
 
-    def make_move(self, map: Map):
+    def make_move(self, map_object: Map):
         """Выполнить ход, либо съесть травы"""
-        path: list[Coordinates] | None = self.find_path_to_resource(map, Grass)
+        path: list[Coordinates] | None = self.find_path_to_resource(map_object, Grass)
         if path is None:
             return
 
         if len(path) == 2:
-            map.entities.pop(path[-1])
+            map_object.entities.pop(path[-1])
 
         elif len(path) <= self.speed:
-            current_entity = map.entities.pop(path[0])
-            map.entities[path[-2]] = current_entity
+            current_entity = map_object.entities.pop(path[0])
+            map_object.entities[path[-2]] = current_entity
 
         else:
-            current_entity = map.entities.pop(path[0])
-            map.entities[path[self.speed]] = current_entity
+            current_entity = map_object.entities.pop(path[0])
+            map_object.entities[path[self.speed]] = current_entity
 
     def attacked(self, attack_power: int):
         self.hp -= attack_power
@@ -130,23 +130,23 @@ class Predator(Creature):
         super().__init__(speed, health)
         self.ap = attack_power
 
-    def make_move(self, map: Map):
+    def make_move(self, map_object: Map):
         """Выполнить ход, атаковать"""
-        path: list[Coordinates] | None = self.find_path_to_resource(map, Herbivore)
+        path: list[Coordinates] | None = self.find_path_to_resource(map_object, Herbivore)
         if path is None:
             return
 
         if len(path) == 2:
-            map.entities[path[-1]].attacked(self.ap)
+            map_object.entities[path[-1]].attacked(self.ap)
 
         elif len(path) <= self.speed:
-            current_entity = map.entities.pop(path[0])
-            map.entities[path[-2]] = current_entity
-            map.entities[path[-1]].attacked(self.ap)
+            current_entity = map_object.entities.pop(path[0])
+            map_object.entities[path[-2]] = current_entity
+            map_object.entities[path[-1]].attacked(self.ap)
 
         else:
-            current_entity = map.entities.pop(path[0])
-            map.entities[path[self.speed]] = current_entity
+            current_entity = map_object.entities.pop(path[0])
+            map_object.entities[path[self.speed]] = current_entity
 
 
 class EntityFactory:
@@ -196,18 +196,18 @@ class Actions(ABC):
 
 
 class SpawnEntity(Actions):
-    def __init__(self, spawn_limit: int, world_map: Map, entity_factory: EntityFactory):
+    def __init__(self, spawn_limit: int, map_object: Map, entity_factory: EntityFactory):
         self.spawn_limit = spawn_limit
-        self.world_map = world_map
+        self.map_object = map_object
         self.entity_factory = entity_factory
 
     def do(self) -> None:
         while self.spawn_limit:
             entity = self.entity_factory.create_entity()
-            coordinate = Coordinates(randint(0, self.world_map.width - 1), randint(0, self.world_map.height - 1))
-            if coordinate in self.world_map.entities:
+            coordinate = Coordinates(randint(0, self.map_object.width - 1), randint(0, self.map_object.height - 1))
+            if coordinate in self.map_object.entities:
                 continue
-            self.world_map.add_entity(coordinate, entity)
+            self.map_object.add_entity(coordinate, entity)
             self.spawn_limit -= 1
 
 
@@ -276,13 +276,13 @@ class SpawnPredator(Actions):
 
 
 class MoveEntity(Actions):
-    def __init__(self, map: Map):
-        self.map = map
+    def __init__(self, map_object: Map):
+        self.map_object = map_object
 
     def do(self) -> None:
-        for entity in self.map.creatures:
+        for entity in self.map_object.creatures:
             if isinstance(entity, Creature):
-                entity.make_move(self.map)
+                entity.make_move(self.map_object)
 
 
 class DelEntity(Actions):
@@ -294,8 +294,8 @@ class DelEntity(Actions):
 
 
 class FindDeadEntity(Actions):
-    def __init__(self, map: Map):
-        self.map = map
+    def __init__(self, map_object: Map):
+        self.map_object = map_object
 
     def is_dead(self, entity) -> bool:
         if entity.hp > 0:
@@ -303,10 +303,10 @@ class FindDeadEntity(Actions):
         return True
 
     def do(self):
-        for entity in self.map.creatures.copy():
+        for entity in self.map_object.creatures.copy():
             if self.is_dead(entity):
-                self.map.creatures.discard(entity)
-                del self.map.entities[entity.find_current_coord(entity, self.map)]
+                self.map_object.creatures.discard(entity)
+                del self.map_object.entities[entity.find_current_coord(entity, self.map_object)]
 
 
 class Simulation:
@@ -395,7 +395,7 @@ class Simulation:
         print(self._counter)
 
 
-def processing_user_commands(object: Simulation) -> None:
+def processing_user_commands(work_object: Simulation) -> None:
     while True:
         pause_flag = False
         user_input = input("""
@@ -404,26 +404,26 @@ def processing_user_commands(object: Simulation) -> None:
         match user_input:
             case "e":
                 print("stop_flag = 'stop'")
-                object.stop_simulation()
+                work_object.stop_simulation()
                 break
 
             case "p":
                 print("stop_flag = 'pause'")
                 pause_flag = True
-                object.pause_simulation()
+                work_object.pause_simulation()
 
             case "n":
                 print("stop_flag = 'next'")
-                object.next_turn()
+                work_object.next_turn()
 
             case "s":
                 if pause_flag:
                     print("stop_flag = 'resume'")
                     pause_flag = False
-                    object.resume_simulation()
+                    work_object.resume_simulation()
                 else:
                     print("stop_flag = 'start'")
-                    object.start_simulation()
+                    work_object.start_simulation()
 
 
 if __name__ == '__main__':

@@ -211,40 +211,6 @@ class SpawnEntity(Actions):
             self.spawn_limit -= 1
 
 
-class InitAction(Actions):
-    def __init__(self, spawn_coef: float, map: Map, entity: Entity):
-        self.entity = entity
-        self.spawn_coef = spawn_coef
-        self.map = map
-
-    def do(self) -> None:
-        spawn_limit: int = int(self.map.width * self.map.height * self.spawn_coef)
-        while spawn_limit:
-            coordinate = Coordinates(randint(0, self.map.width - 1), randint(0, self.map.height - 1))
-            if coordinate in self.map.entities:
-                continue
-            if self.entity is Rock:
-                self.map.add_entity(coordinate, SpawnRock.do())
-
-            elif self.entity is Tree:
-                self.map.add_entity(coordinate, SpawnTree.do())
-
-            elif self.entity is Grass:
-                self.map.add_entity(coordinate, SpawnGrass.do())
-
-            elif self.entity is Herbivore:
-                herbivore = SpawnHerbivore.do()
-                self.map.add_entity(coordinate, herbivore)
-                self.map.creatures.add(herbivore)
-
-            elif self.entity is Predator:
-                predator = SpawnPredator.do()
-                self.map.add_entity(coordinate, predator)
-                self.map.creatures.add(predator)
-
-            spawn_limit -= 1
-
-
 class SpawnRock(Actions):
     @classmethod
     def do(cls) -> Rock:

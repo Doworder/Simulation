@@ -76,8 +76,8 @@ class Creature(Entity):
                 if entity_coord is not coord:
                     continue
 
-            neiborgs = self.get_neighbors(entity_coord, path_to_resource, map)
-            search_queue += neiborgs
+            neighbors = self.get_neighbors(entity_coord, path_to_resource, map_object)
+            search_queue += neighbors
 
         return None
 

@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from random import randint
 from collections import deque
 from threading import Thread, Event
+import time
 
 
 @dataclass(frozen=True)
@@ -290,21 +291,21 @@ class Simulation:
 
 
     def __init__(self, width: int, height: int):
-        self.map = Map(width, height)
+        self._map = Map(width, height)
         self._counter = 0
         self._event = Event()
         self._tread =None
         self._simulation_flag = True
         self.init_actions: list = [
-            SpawnEntity(8, self.map, RockFactory()),
-            SpawnEntity(7, self.map, TreeFactory()),
-            SpawnEntity(15, self.map, GrassFactory()),
-            SpawnEntity(15, self.map, HerbivoreFactory(10, 1)),
-            SpawnEntity(10, self.map, PredatorFactory(10, 3, 3))
+            SpawnEntity(8, self._map, RockFactory()),
+            SpawnEntity(7, self._map, TreeFactory()),
+            SpawnEntity(15, self._map, GrassFactory()),
+            SpawnEntity(15, self._map, HerbivoreFactory(10, 1)),
+            SpawnEntity(10, self._map, PredatorFactory(10, 3, 3))
         ]
         self.turn_actions: list = [
-            FindDeadEntity(self.map),
-            MoveEntity(self.map)
+            FindDeadEntity(self._map),
+            MoveEntity(self._map)
         ]
 
         for action in self.init_actions:
@@ -315,13 +316,14 @@ class Simulation:
         for action in self.turn_actions:
             action.do()
 
-        self.map_renderer()
         self._counter += 1
+        self.map_renderer()
 
     def _next_turn_loop(self):
         while self._simulation_flag:
             self._event.wait()
             self.next_turn()
+            time.sleep(1)
 
 
     def start_simulation(self):
@@ -343,8 +345,8 @@ class Simulation:
         self._simulation_flag = False
 
     def map_renderer(self):
-        width = self.map.width
-        height = self.map.height
+        width = self._map.width
+        height = self._map.height
         rendering_symbols = {
             Predator: 'P ',
             Herbivore: 'H ',
@@ -356,10 +358,10 @@ class Simulation:
         for j in range(height):
             for i in range(width):
                 coord = Coordinates(i, j)
-                if coord not in self.map.entities:
+                if coord not in self._map.entities:
                     print('* ', end='')
                 else:
-                    print(rendering_symbols[(self.map.entities[coord]).__class__], end='')
+                    print(rendering_symbols[(self._map.entities[coord]).__class__], end='')
             print()
         print(self._counter)
 

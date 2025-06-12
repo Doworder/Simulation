@@ -251,8 +251,7 @@ class MoveEntity(Actions):
 
     def do(self) -> None:
         for entity in self.map_object.creatures:
-            if isinstance(entity, Creature):
-                entity.make_move(self.map_object)
+            entity.make_move(self.map_object)
 
 
 class DelEntity(Actions):

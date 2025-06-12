@@ -29,6 +29,8 @@ class Map:
 
     def add_entity(self, coordinates: Coordinates, entity: Entity) -> None:
         self.entities[coordinates] = entity
+        if isinstance(entity, Creature):
+            self.creatures.add(entity)
 
     def remove_entity(self, coordinates: Coordinates):
         if coordinates in self.entities:

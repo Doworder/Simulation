@@ -61,6 +61,8 @@ class Creature(Entity):
     def find_path_to_resource(self, map_object: Map, resource: type[Entity]) -> list[Coordinates] | None:
         processed: list = []
         coord = self.find_current_coord(self, map_object)
+        if coord is None:
+            return None
         search_queue = deque()  # type: ignore
         search_queue.append((coord, []))
         while search_queue:

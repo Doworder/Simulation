@@ -399,9 +399,9 @@ def processing_user_commands(work_object: Simulation) -> None:
 
 if __name__ == '__main__':
     world = Simulation(15, 10)
-    for action in world.init_actions:
-        action.do()
 
+    print()
     world.map_renderer()
 
-    simulation = Thread(target=processing_user_commands, args=(world, )).start()
+    simulation = Thread(target=processing_user_commands, args=(world, ))
+    simulation.start()

@@ -7,7 +7,7 @@ import time
 
 
 @dataclass(frozen=True)
-class Coordinates:
+class Point:
     x: int
     y: int
 

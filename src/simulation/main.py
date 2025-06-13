@@ -267,7 +267,7 @@ class MoveEntity(Actions):
         self.map_object = map_object
 
     def do(self) -> None:
-        for entity in self.map_object.creatures:
+        for entity in self.map_object.get_creatures():
             entity.make_move(self.map_object)
 
 

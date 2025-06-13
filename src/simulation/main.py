@@ -2,7 +2,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import ValuesView, KeysView
 from dataclasses import dataclass
-from random import randint
+from random import randrange
 from collections import deque
 from threading import Thread, Event
 import time
@@ -225,8 +225,8 @@ class SpawnEntity(Actions):
     def do(self) -> None:
         while self.spawn_limit:
             entity = self.entity_factory.create_entity()
-            coordinate = Coordinates(randint(0, self.map_object.width - 1), randint(0, self.map_object.height - 1))
-            if coordinate in self.map_object.entities:
+            coordinate = Point(randrange(0, self.map_object.width), randrange(0, self.map_object.height))
+            if coordinate in self.map_object.get_used_points():
                 continue
             self.map_object.add_entity(coordinate, entity)
             self.spawn_limit -= 1

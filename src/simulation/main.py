@@ -77,9 +77,9 @@ class Creature(Entity):
     def make_move(self, map_object: Map) -> None:
         pass
 
-    def find_path_to_resource(self, map_object: Map, resource: type[Entity]) -> list[Coordinates] | None:
+    def find_path_to_resource(self, map_object: Map, resource: type[Entity]) -> list[Point] | None:
         processed: list = []
-        coord = self.find_current_coord(self, map_object)
+        coord = map_object.get_entity_point(self)
         if coord is None:
             return None
         search_queue = deque()  # type: ignore
@@ -91,11 +91,11 @@ class Creature(Entity):
 
             processed.append(entity_coord)
 
-            if isinstance(map_object.entities.get(entity_coord), resource):
+            if isinstance(map_object.get_entity(entity_coord), resource):
                 path_to_resource.append(entity_coord)
                 return path_to_resource
 
-            if isinstance(map_object.entities.get(entity_coord), Entity):
+            if isinstance(map_object.get_entity(entity_coord), Entity):
                 if entity_coord is not coord:
                     continue
 
@@ -105,22 +105,14 @@ class Creature(Entity):
         return None
 
     @staticmethod
-    def find_current_coord(value, map_object: Map) -> Coordinates | None:
-        """Возвращает значение координат объекта value из map_object"""
-        for coord, entity in map_object.entities.items():
-            if entity == value:
-                return coord
-        return None
-
-    @staticmethod
-    def get_neighbors(coords: Coordinates, path: list, map_object: Map) -> list:
+    def get_neighbors(coords: Point, path: list, map_object: Map) -> list:
         neighbors_coords = [
             (coords.x, coords.y+1),
             (coords.x+1, coords.y),
             (coords.x, coords.y-1),
             (coords.x-1, coords.y)
         ]
-        return [(Coordinates(x, y), path + [coords]) for x, y in neighbors_coords if (0 <= x < map_object.width and 0 <= y < map_object.height)]
+        return [(Point(x, y), path + [coords]) for x, y in neighbors_coords if (0 <= x < map_object.width and 0 <= y < map_object.height)]
 
 
 class Herbivore(Creature):

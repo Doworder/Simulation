@@ -121,20 +121,22 @@ class Herbivore(Creature):
 
     def make_move(self, map_object: Map):
         """Выполнить ход, либо съесть травы"""
-        path: list[Coordinates] | None = self.find_path_to_resource(map_object, Grass)
+        path: list[Point] | None = self.find_path_to_resource(map_object, Grass)
         if path is None:
             return
 
         if len(path) == 2:
-            map_object.entities.pop(path[-1])
+            map_object.remove_entity(path[-1])
 
         elif len(path) <= self.speed:
-            current_entity = map_object.entities.pop(path[0])
-            map_object.entities[path[-2]] = current_entity
+            current_entity = map_object.get_entity(path[0])
+            map_object.remove_entity(path[0])
+            map_object.add_entity(path[-2], current_entity)
 
         else:
-            current_entity = map_object.entities.pop(path[0])
-            map_object.entities[path[self.speed]] = current_entity
+            current_entity = map_object.get_entity(path[0])
+            map_object.remove_entity(path[0])
+            map_object.add_entity(path[self.speed], current_entity)
 
     def attacked(self, attack_power: int):
         self.hp -= attack_power

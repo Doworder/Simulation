@@ -283,16 +283,18 @@ class FindDeadEntity(Actions):
     def __init__(self, map_object: Map):
         self.map_object = map_object
 
-    def is_dead(self, entity) -> bool:
+    @staticmethod
+    def is_dead(entity) -> bool:
         if entity.hp > 0:
             return False
         return True
 
     def do(self):
-        for entity in self.map_object.creatures.copy():
+        creatures = self.map_object.get_creatures()
+        for entity in creatures:
             if self.is_dead(entity):
-                self.map_object.creatures.discard(entity)
-                del self.map_object.entities[entity.find_current_coord(entity, self.map_object)]
+                point = self.map_object.get_entity_point(entity)
+                self.map_object.remove_entity(point)
 
 
 class Simulation:

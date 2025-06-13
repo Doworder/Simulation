@@ -373,11 +373,12 @@ class Simulation:
 
         for j in range(height):
             for i in range(width):
-                coord = Coordinates(i, j)
-                if coord not in self._map.entities:
+                coord = Point(i, j)
+                if coord not in self._map.get_used_points():
                     print('* ', end='')
                 else:
-                    print(rendering_symbols[(self._map.entities[coord]).__class__], end='')
+                    entity = self._map.get_entity(coord)
+                    print(rendering_symbols[entity.__class__], end='')
             print()
         print(self._counter)
 

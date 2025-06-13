@@ -271,14 +271,6 @@ class MoveEntity(Actions):
             entity.make_move(self.map_object)
 
 
-class DelEntity(Actions):
-    def __init__(self, entity: Entity):
-        self.entity = entity
-
-    def do(self):
-        del self.entity
-
-
 class FindDeadEntity(Actions):
     def __init__(self, map_object: Map):
         self.map_object = map_object

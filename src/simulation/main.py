@@ -355,39 +355,38 @@ class Simulation:
 
 
 
-    def __init__(self, width: int, height: int):
-        self._map = Map(width, height)
+    def __init__(
+            self,
+            init_actions: list[Actions],
+            turn_actions: list[Actions],
+            world_map: Map,
+            renderer: Renderer
+    ):
+        self._map = world_map
         self._counter = 0
         self._event = Event()
         self._tread =None
         self._simulation_flag = True
-        self.init_actions: list = [
-            SpawnEntity(8, self._map, RockFactory()),
-            SpawnEntity(7, self._map, TreeFactory()),
-            SpawnEntity(15, self._map, GrassFactory()),
-            SpawnEntity(15, self._map, HerbivoreFactory(10, 1)),
-            SpawnEntity(10, self._map, PredatorFactory(10, 3, 3))
-        ]
-        self.turn_actions: list = [
-            FindDeadEntity(self._map),
-            MoveEntity(self._map)
-        ]
+        self._init_actions = init_actions
+        self._turn_actions = turn_actions
+        self._renderer = renderer
 
-        for action in self.init_actions:
+        for action in self._init_actions:
             action.do()
 
     def next_turn(self):
         """ Просимулировать и отрендерить один ход"""
-        for action in self.turn_actions:
+        for action in self._turn_actions:
             action.do()
 
         self._counter += 1
-        self.map_renderer()
+        #self._renderer.nexted()
 
     def _next_turn_loop(self):
         while self._simulation_flag:
             self._event.wait()
             self.next_turn()
+            self._renderer.started()
             time.sleep(1)
 
 
@@ -409,27 +408,6 @@ class Simulation:
         """остановить бесконечный цикл симуляции и рендеринга"""
         self._simulation_flag = False
 
-    def map_renderer(self):
-        width = self._map.width
-        height = self._map.height
-        rendering_symbols = {
-            Predator: 'P ',
-            Herbivore: 'H ',
-            Grass: 'G ',
-            Rock: 'R ',
-            Tree: 'T '
-        }
-
-        for j in range(height):
-            for i in range(width):
-                coord = Point(i, j)
-                if coord not in self._map.get_used_points():
-                    print('* ', end='')
-                else:
-                    entity = self._map.get_entity(coord)
-                    print(rendering_symbols[entity.__class__], end='')
-            print()
-        print(self._counter)
 
 
 def processing_user_commands(work_object: Simulation) -> None:

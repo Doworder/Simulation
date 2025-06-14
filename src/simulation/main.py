@@ -409,36 +409,37 @@ class Simulation:
         self._simulation_flag = False
 
 
-
-def processing_user_commands(work_object: Simulation) -> None:
+def launcher(process: Simulation, renderer: Renderer) -> None:
+    """Засунуть в Render!?"""
+    renderer.preview()
     while True:
         pause_flag = False
-        user_input = input("""
-        Press (S, Enter) to start or (N, Enter) to one cicle
-        Press (P, Enter) to pause or (E, Enter) to exit""").lower()
+        user_input = input().lower()
         match user_input:
             case "e":
                 print("stop_flag = 'stop'")
-                work_object.stop_simulation()
+                process.stop_simulation()
                 break
 
             case "p":
                 print("stop_flag = 'pause'")
                 pause_flag = True
-                work_object.pause_simulation()
+                process.pause_simulation()
+                renderer.paused()
 
             case "n":
                 print("stop_flag = 'next'")
-                work_object.next_turn()
+                process.next_turn()
+                renderer.nexted()
 
             case "s":
                 if pause_flag:
                     print("stop_flag = 'resume'")
                     pause_flag = False
-                    work_object.resume_simulation()
+                    process.resume_simulation()
                 else:
                     print("stop_flag = 'start'")
-                    work_object.start_simulation()
+                    process.start_simulation()
 
 
 if __name__ == '__main__':

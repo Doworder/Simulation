@@ -443,10 +443,23 @@ def launcher(process: Simulation, renderer: Renderer) -> None:
 
 
 if __name__ == '__main__':
-    world = Simulation(15, 10)
+    world = Map(15, 10)
+    renderer = Renderer(world)
 
-    print()
-    world.map_renderer()
+    init_actions: list[Actions] = [
+            SpawnEntity(8, world, RockFactory()),
+            SpawnEntity(7, world, TreeFactory()),
+            SpawnEntity(15, world, GrassFactory()),
+            SpawnEntity(15, world, HerbivoreFactory(10, 1)),
+            SpawnEntity(10, world, PredatorFactory(10, 3, 3))
+        ]
 
-    simulation = Thread(target=processing_user_commands, args=(world, ))
+    turn_actions: list[Actions] = [
+            FindDeadEntity(world),
+            MoveEntity(world)
+        ]
+
+    world_simulation = Simulation(init_actions, turn_actions, world, renderer)
+
+    simulation = Thread(target=launcher, args=(world_simulation, renderer))
     simulation.start()

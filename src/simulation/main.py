@@ -289,6 +289,61 @@ class FindDeadEntity(Actions):
                 self.map_object.remove_entity(point)
 
 
+class Renderer:
+    """Выполняет отрисовку в консоле"""
+    PREVIEW = """
+        Welcome to the 2D world simulation. 
+        Use the keyboard to interact with the program.
+        Press (S, Enter) to start or (N, Enter) to one circle or (E, Enter) to exit"""
+    STARTED = """
+        Press (P, Enter) to pause or (E, Enter) to exit"""
+    PAUSED = """
+        Press (S, Enter) to start or (N, Enter) to one circle or (E, Enter) to exit"""
+    NEXT = """
+        Press (S, Enter) to start or (N, Enter) to one circle or (E, Enter) to exit"""
+
+    def __init__(self, world_map: Map):
+        self._map = world_map
+
+    def _render(self):
+        """Сделать отдельный класс"""
+        width = self._map.width
+        height = self._map.height
+        rendering_symbols = {
+            Predator: 'P ',
+            Herbivore: 'H ',
+            Grass: 'G ',
+            Rock: 'R ',
+            Tree: 'T '
+        }
+
+        for j in range(height):
+            for i in range(width):
+                coord = Point(i, j)
+                if coord not in self._map.get_used_points():
+                    print('* ', end='')
+                else:
+                    entity = self._map.get_entity(coord)
+                    print(rendering_symbols[entity.__class__], end='')
+            print()
+
+    def preview(self):
+        self._render()
+        print(self.PREVIEW)
+
+    def started(self):
+        self._render()
+        print(self.STARTED)
+
+    def paused(self):
+        self._render()
+        print(self.PAUSED)
+
+    def nexted(self):
+        self._render()
+        print(self.NEXT)
+
+
 class Simulation:
     """Главный класс приложения, включает в себя:
 

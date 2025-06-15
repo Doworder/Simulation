@@ -273,7 +273,7 @@ class PredatorFactory(EntityFactory):
 
 class Actions(ABC):
     @abstractmethod
-    def do(self) -> None:
+    def __call__(self) -> None:
         pass
 
 
@@ -283,7 +283,7 @@ class SpawnEntity(Actions):
         self.map_object = map_object
         self.entity_factory = entity_factory
 
-    def do(self) -> None:
+    def __call__(self) -> None:
         while self.spawn_limit:
             entity = self.entity_factory.create_entity()
             coordinate = Point(randrange(0, self.map_object.width), randrange(0, self.map_object.height))
@@ -327,7 +327,7 @@ class MoveEntity(Actions):
     def __init__(self, map_object: Map):
         self.map_object = map_object
 
-    def do(self) -> None:
+    def __call__(self) -> None:
         for entity in self.map_object.get_creatures():
             entity.make_move(self.map_object)
 
@@ -342,7 +342,7 @@ class FindDeadEntity(Actions):
             return False
         return True
 
-    def do(self):
+    def __call__(self):
         creatures = self.map_object.get_creatures()
         for entity in creatures:
             if self.is_dead(entity):

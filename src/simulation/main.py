@@ -468,7 +468,7 @@ def launcher(process: Simulation, renderer: Renderer) -> None:
 
 if __name__ == '__main__':
     world = Map(15, 10)
-    renderer = Renderer(world)
+    renderer = Renderer(world, icons)
 
     init_actions: list[Actions] = [
             SpawnEntity(8, world, RockFactory()),

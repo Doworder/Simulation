@@ -1,0 +1,27 @@
+[world]
+width = 15
+height = 10
+
+[herbivore]
+health = 10
+speed = 2
+
+[predator]
+health = 10
+speed = 2
+attack_power = 3
+
+[spawn_limit]
+predator = 10
+herbivore = 10
+tree = 10
+grass = 10
+rock = 10
+
+[icons]
+Predator = "P "
+Herbivore = "H "
+Grass = "G "
+Rock = "R "
+Tree = "T "
+default = "* "

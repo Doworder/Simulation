@@ -221,30 +221,14 @@ class Herbivore(Creature):
 
 class Predator(Creature):
     def __init__(self, speed: int, health: int, attack_power: int):
-        super().__init__(speed, health)
+        super().__init__(speed, health, Herbivore)
         self.ap = attack_power
 
-    def make_move(self, map_object: Map):
-        """Выполнить ход, атаковать"""
-        path: list[Point] | None = self.find_path_to_resource(map_object, Herbivore)
-        if path is None:
-            return
-
-        if len(path) == 2:
-            target_entity: Herbivore = map_object.get_entity(path[-1])
+    def target_interaction_handler(self, map_object: Map, target_point: Point):
+        """Хищник атакует травоядное"""
+        target_entity = map_object.get_entity(target_point)
+        if isinstance(target_entity, Herbivore):
             target_entity.attacked(self.ap)
-
-        elif len(path) <= self.speed:
-            current_entity = map_object.get_entity(path[0])
-            map_object.remove_entity(path[0])
-            map_object.add_entity(path[-2], current_entity)
-            target_entity = map_object.get_entity(path[-1])
-            target_entity.attacked(self.ap)
-
-        else:
-            current_entity = map_object.get_entity(path[0])
-            map_object.remove_entity(path[0])
-            map_object.add_entity(path[self.speed], current_entity)
 
 
 class EntityFactory:

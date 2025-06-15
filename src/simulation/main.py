@@ -398,12 +398,12 @@ class Simulation:
         self._renderer = renderer
 
         for action in self._init_actions:
-            action.do()
+            action()
 
     def next_turn(self):
         """ Просимулировать и отрендерить один ход"""
         for action in self._turn_actions:
-            action.do()
+            action()
 
         self._counter += 1
 

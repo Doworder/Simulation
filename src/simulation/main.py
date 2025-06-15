@@ -293,36 +293,6 @@ class SpawnEntity(Actions):
             self.spawn_limit -= 1
 
 
-class SpawnRock(Actions):
-    @classmethod
-    def do(cls) -> Rock:
-        return Rock()
-
-
-class SpawnTree(Actions):
-    @classmethod
-    def do(cls) -> Tree:
-        return Tree()
-
-
-class SpawnGrass(Actions):
-    @classmethod
-    def do(cls) -> Grass:
-        return Grass()
-
-
-class SpawnHerbivore(Actions):
-    @classmethod
-    def do(cls) -> Herbivore:
-        return Herbivore(1, 10)
-
-
-class SpawnPredator(Actions):
-    @classmethod
-    def do(cls) -> Predator:
-        return Predator(3,10, 3)
-
-
 class MoveEntity(Actions):
     def __init__(self, map_object: Map):
         self.map_object = map_object
@@ -367,7 +337,6 @@ class Renderer:
         self._map = world_map
 
     def _render(self):
-        """Сделать отдельный класс"""
         width = self._map.width
         height = self._map.height
         rendering_symbols = {
@@ -441,7 +410,6 @@ class Simulation:
             action.do()
 
         self._counter += 1
-        #self._renderer.nexted()
 
     def _next_turn_loop(self):
         while self._simulation_flag:
@@ -471,7 +439,6 @@ class Simulation:
 
 
 def launcher(process: Simulation, renderer: Renderer) -> None:
-    """Засунуть в Render!?"""
     renderer.preview()
     while True:
         pause_flag = False

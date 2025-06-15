@@ -7,6 +7,8 @@ from collections import deque
 from threading import Thread, Event
 import time
 
+from simulation.config import icons
+
 
 @dataclass(frozen=True)
 class Point:
@@ -333,28 +335,22 @@ class Renderer:
     NEXT = """
         Press (S, Enter) to start or (N, Enter) to one circle or (E, Enter) to exit"""
 
-    def __init__(self, world_map: Map):
+    def __init__(self, world_map: Map, rendering_symbols: dict[str, str]):
         self._map = world_map
+        self._rendering_symbols = rendering_symbols
 
     def _render(self):
         width = self._map.width
         height = self._map.height
-        rendering_symbols = {
-            Predator: 'P ',
-            Herbivore: 'H ',
-            Grass: 'G ',
-            Rock: 'R ',
-            Tree: 'T '
-        }
 
         for j in range(height):
             for i in range(width):
                 coord = Point(i, j)
                 if coord not in self._map.get_used_points():
-                    print('* ', end='')
+                    print(self._rendering_symbols.get('default'), end='')
                 else:
                     entity = self._map.get_entity(coord)
-                    print(rendering_symbols[entity.__class__], end='')
+                    print(self._rendering_symbols.get(type(entity).__name__), end='')
             print()
 
     def preview(self):

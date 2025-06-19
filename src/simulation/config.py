@@ -52,6 +52,17 @@ class Icons:
     default : str
 
 
+@dataclass
+class Config:
+    world: WorldConfig
+    herbivore: HerbivoreConfig
+    predator: PredatorConfig
+    spawn_limit: SpawnInitConfig
+    balance_grass: GrassTurnConfig
+    balance_herbivore: HerbivoreTurnConfig
+    icons: Icons
+
+
 
 print(data.items())
 world = data['world']

@@ -5,9 +5,53 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
-path = Path("config.example.toml")
-with path.open(mode="rb") as f:
-    data = tomllib.load(f)
+@dataclass
+class WorldConfig:
+    width: int
+    height: int
+
+
+@dataclass
+class HerbivoreConfig:
+    health: int
+    speed: int
+
+@dataclass
+class PredatorConfig:
+    health: int
+    speed: int
+    attack_power: int
+
+
+@dataclass
+class SpawnInitConfig:
+    predator: int
+    herbivore: int
+    tree: int
+    grass: int
+    rock: int
+
+
+@dataclass
+class GrassTurnConfig:
+    count: int
+
+
+@dataclass
+class HerbivoreTurnConfig:
+    count: int
+
+
+@dataclass
+class Icons:
+    predator: str
+    herbivore: str
+    tree: str
+    grass: str
+    rock: str
+    default : str
+
+
 
 print(data.items())
 world = data['world']

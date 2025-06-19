@@ -19,9 +19,9 @@ grass = 10
 rock = 10
 
 [icons]
-Predator = "P "
-Herbivore = "H "
-Grass = "G "
-Rock = "R "
-Tree = "T "
-default = "* "
+predator = "🐺 "
+herbivore = "🐇 "
+grass = "🌿 "
+rock = "🪨 "
+tree = "🌳 "
+default = "🟧 "

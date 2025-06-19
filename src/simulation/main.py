@@ -286,13 +286,14 @@ class SpawnEntity(Actions):
         self.entity_factory = entity_factory
 
     def __call__(self) -> None:
-        while self.spawn_limit:
+        counter: int = 0
+        while counter < self.spawn_limit:
             entity = self.entity_factory.create_entity()
             coordinate = Point(randrange(0, self.map_object.width), randrange(0, self.map_object.height))
             if coordinate in self.map_object.get_used_points():
                 continue
             self.map_object.add_entity(coordinate, entity)
-            self.spawn_limit -= 1
+            counter += 1
 
 
 class MoveEntity(Actions):

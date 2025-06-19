@@ -495,6 +495,8 @@ if __name__ == '__main__':
         ]
 
     turn_actions: list[Actions] = [
+            ResourceBalancer(world, Grass, SpawnEntity(config.balance_grass.count, world, GrassFactory())),
+            ResourceBalancer(world, Herbivore, SpawnEntity(config.balance_herbivore.count, world, HerbivoreFactory(10, 1))),
             FindDeadEntity(world),
             MoveEntity(world)
         ]

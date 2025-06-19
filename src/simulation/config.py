@@ -61,11 +61,24 @@ class Config:
     icons: Icons
 
 
+class ConfigCreator:
+    def __init__(self):
+        self.config = {}
 
-print(data.items())
-world = data['world']
-herbivore = data['herbivore']
-predator = data['predator']
-spawn_limit = data['spawn_limit']
-icons = data['icons']
-print(world, herbivore, predator, spawn_limit, icons, sep='\n')
+    def __call__(self, data, cls) -> Config:
+        for item in data.items():
+            current_class = Config.__annotations__[item[0]]
+            self.config[item[0]] = current_class(**item[1])
+
+        return cls(**self.config)
+
+
+config_creator = ConfigCreator()
+
+def load_config(path: Path) -> Config:
+    with path.open(mode="rb") as f:
+        data = tomllib.load(f)
+
+    config = config_creator(data, Config)
+
+    return config

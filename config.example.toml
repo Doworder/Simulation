@@ -18,6 +18,13 @@ tree = 10
 grass = 10
 rock = 10
 
+[balance_grass]
+count = 3
+
+[balance_herbivore]
+count = 3
+
+
 [icons]
 predator = "🐺 "
 herbivore = "🐇 "

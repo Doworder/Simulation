@@ -324,7 +324,7 @@ class FindDeadEntity(Actions):
 
 
 class Renderer:
-    """Выполняет отрисовку в консоле"""
+    """Выполняет отрисовки в консоли"""
     PREVIEW = """
         Welcome to the 2D world simulation. 
         Use the keyboard to interact with the program.
@@ -336,7 +336,8 @@ class Renderer:
     NEXT = """
         Press (S, Enter) to start or (N, Enter) to one circle or (E, Enter) to exit"""
 
-    def __init__(self, world_map: Map, rendering_symbols: dict[str, str]):
+    def __init__(self, world_map: Map, rendering_symbols: dict[type[Entity], str], default_symbol: str):
+        self.default_symbol = default_symbol
         self._map = world_map
         self._rendering_symbols = rendering_symbols
 
@@ -348,10 +349,10 @@ class Renderer:
             for i in range(width):
                 coord = Point(i, j)
                 if coord not in self._map.get_used_points():
-                    print(self._rendering_symbols.get('default'), end='')
+                    print(self.default_symbol, end='')
                 else:
                     entity = self._map.get_entity(coord)
-                    print(self._rendering_symbols.get(type(entity).__name__), end='')
+                    print(self._rendering_symbols.get(type(entity)), end='')
             print()
 
     def preview(self):

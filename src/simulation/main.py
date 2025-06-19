@@ -1,5 +1,6 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
+from pathlib import Path
 from typing import ValuesView, KeysView, Deque
 from dataclasses import dataclass
 from random import randrange
@@ -7,7 +8,7 @@ from collections import deque
 from threading import Thread, Event
 import time
 
-from simulation.config import icons
+from simulation.config import load_config
 
 
 @dataclass(frozen=True)
@@ -483,15 +484,33 @@ def launcher(process: Simulation, renderer: Renderer) -> None:
 
 
 if __name__ == '__main__':
-    world = Map(15, 10)
-    renderer = Renderer(world, icons)
+    config = load_config(Path("config.example.toml"))
+
+    world = Map(config.world.width, config.world.height)
+
+    rendering_simbols: dict[type[Entity], str] = {
+        Rock: config.icons.rock,
+        Tree: config.icons.tree,
+        Grass: config.icons.grass,
+        Herbivore: config.icons.herbivore,
+        Predator: config.icons.predator
+    }
+    default_symbol: str = config.icons.default
+
+    renderer = Renderer(world, rendering_simbols, default_symbol)
 
     init_actions: list[Actions] = [
-            SpawnEntity(8, world, RockFactory()),
-            SpawnEntity(7, world, TreeFactory()),
-            SpawnEntity(15, world, GrassFactory()),
-            SpawnEntity(15, world, HerbivoreFactory(10, 1)),
-            SpawnEntity(10, world, PredatorFactory(10, 3, 3))
+            SpawnEntity(config.spawn_limit.rock, world, RockFactory()),
+            SpawnEntity(config.spawn_limit.tree, world, TreeFactory()),
+            SpawnEntity(config.spawn_limit.grass, world, GrassFactory()),
+            SpawnEntity(
+                config.spawn_limit.herbivore,
+                world,
+                HerbivoreFactory(config.herbivore.health, config.herbivore.speed)),
+            SpawnEntity(
+                config.spawn_limit.predator,
+                world,
+                PredatorFactory(config.predator.health, config.predator.speed, config.predator.attack_power))
         ]
 
     turn_actions: list[Actions] = [

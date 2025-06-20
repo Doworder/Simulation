@@ -1,8 +1,7 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
 
-from simulation.coordinates import Point
 from simulation.path_finder import PathFinder
-from simulation.world_map import Map
 
 
 class Entity(ABC): ...

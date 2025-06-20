@@ -1,9 +1,8 @@
+from __future__ import annotations
 from collections import deque
 from typing import Deque
 
 from simulation.coordinates import Point
-from simulation.entities import Entity
-from simulation.world_map import Map
 
 
 class PathFinder:

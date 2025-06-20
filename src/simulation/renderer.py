@@ -1,6 +1,6 @@
+from __future__ import annotations
+
 from simulation.coordinates import Point
-from simulation.entities import Entity
-from simulation.world_map import Map
 
 
 class Renderer:

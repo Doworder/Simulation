@@ -39,7 +39,10 @@ def launcher(process: Simulation, renderer: Renderer) -> None:
 
 
 def main():
-    config = load_config(Path("config.example.toml"))
+    try:
+        config = load_config(Path("config.toml"))
+    except FileNotFoundError:
+        config = load_config(Path("config.example.toml"))
 
     world = Map(config.world.width, config.world.height)
 

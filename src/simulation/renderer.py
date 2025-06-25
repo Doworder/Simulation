@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from simulation.coordinates import Point
 
 
@@ -16,7 +14,7 @@ class Renderer:
     NEXT = """
         Press (S, Enter) to start or (N, Enter) to one circle or (E, Enter) to exit"""
 
-    def __init__(self, world_map: Map, rendering_symbols: dict[type[Entity], str], default_symbol: str):
+    def __init__(self, world_map: "Map", rendering_symbols: dict[type["Entity"], str], default_symbol: str):
         self.default_symbol = default_symbol
         self._map = world_map
         self._rendering_symbols = rendering_symbols

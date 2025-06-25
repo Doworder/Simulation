@@ -20,9 +20,11 @@ rock = 10
 
 [balance_grass]
 count = 3
+remaining = 3
 
 [balance_herbivore]
 count = 3
+remaining = 3
 
 
 [icons]

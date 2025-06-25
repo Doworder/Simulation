@@ -34,11 +34,13 @@ class SpawnInitConfig:
 @dataclass
 class GrassTurnConfig:
     count: int
+    remaining: int
 
 
 @dataclass
 class HerbivoreTurnConfig:
     count: int
+    remaining: int
 
 
 @dataclass

@@ -1,4 +1,3 @@
-from __future__ import annotations
 from pathlib import Path
 from threading import Thread
 
@@ -57,23 +56,33 @@ def main():
 
     renderer = Renderer(world, rendering_simbols, default_symbol)
 
+    rock_factory = RockFactory()
+    tree_factory = TreeFactory()
+    grass_factory = GrassFactory()
+    herbivore_factory = HerbivoreFactory(config.herbivore.health, config.herbivore.speed)
+    predator_factory = PredatorFactory(config.predator.health, config.predator.speed, config.predator.attack_power)
+
     init_actions: list[Actions] = [
-            SpawnEntity(config.spawn_limit.rock, world, RockFactory()),
-            SpawnEntity(config.spawn_limit.tree, world, TreeFactory()),
-            SpawnEntity(config.spawn_limit.grass, world, GrassFactory()),
-            SpawnEntity(
-                config.spawn_limit.herbivore,
-                world,
-                HerbivoreFactory(config.herbivore.health, config.herbivore.speed)),
-            SpawnEntity(
-                config.spawn_limit.predator,
-                world,
-                PredatorFactory(config.predator.health, config.predator.speed, config.predator.attack_power))
+            SpawnEntity(config.spawn_limit.rock, world, rock_factory),
+            SpawnEntity(config.spawn_limit.tree, world, tree_factory),
+            SpawnEntity(config.spawn_limit.grass, world, grass_factory),
+            SpawnEntity(config.spawn_limit.herbivore, world, herbivore_factory),
+            SpawnEntity(config.spawn_limit.predator, world, predator_factory)
         ]
 
     turn_actions: list[Actions] = [
-            ResourceBalancer(world, Grass, SpawnEntity(config.balance_grass.count, world, GrassFactory())),
-            ResourceBalancer(world, Herbivore, SpawnEntity(config.balance_herbivore.count, world, HerbivoreFactory(10, 1))),
+            ResourceBalancer(
+                world,
+                Grass,
+                SpawnEntity(config.balance_grass.count, world, grass_factory),
+                config.balance_grass.remaining
+            ),
+            ResourceBalancer(
+                world,
+                Herbivore,
+                SpawnEntity(config.balance_herbivore.count, world, herbivore_factory),
+                config.balance_herbivore.remaining
+            ),
             FindDeadEntity(world),
             MoveEntity(world)
         ]

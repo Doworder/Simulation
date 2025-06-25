@@ -1,5 +1,3 @@
-from typing import ValuesView, KeysView
-
 from simulation.coordinates import Point
 from simulation.entities import Entity, Creature
 
@@ -14,11 +12,11 @@ class Map:
     def get_entity(self, coordinates: Point) -> Entity | None:
         return self._entities.get(coordinates)
 
-    def get_used_points(self) -> KeysView[Point]:
-        return self._entities.keys()
+    def get_used_points(self) -> tuple[Point, ...]:
+        return tuple(self._entities.keys())
 
-    def get_all_entities(self) -> ValuesView[Entity]:
-        return self._entities.values()
+    def get_all_entities(self) -> tuple[Entity, ...]:
+        return tuple(self._entities.values())
 
     def get_creatures(self) -> list[Creature]:
         return [creature for creature in self.get_all_entities() if isinstance(creature, Creature)]

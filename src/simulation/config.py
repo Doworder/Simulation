@@ -1,6 +1,7 @@
 import tomllib
 from dataclasses import dataclass
 from pathlib import Path
+from inspect import get_annotations
 
 
 @dataclass
@@ -66,8 +67,9 @@ class ConfigCreator:
         self.config = {}
 
     def __call__(self, data, cls) -> Config:
+        class_annotations = get_annotations(cls)
         for item in data.items():
-            current_class = Config.__annotations__[item[0]]
+            current_class = class_annotations[item[0]]
             self.config[item[0]] = current_class(**item[1])
 
         return cls(**self.config)

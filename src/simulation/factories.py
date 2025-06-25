@@ -1,9 +1,9 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 
 from simulation.entities import Entity, Rock, Tree, Grass, Herbivore, Predator
 
 
-class EntityFactory:
+class EntityFactory(ABC):
     @abstractmethod
     def create_entity(self) -> Entity: ...
 

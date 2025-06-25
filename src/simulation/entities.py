@@ -1,4 +1,3 @@
-from __future__ import annotations
 from abc import ABC, abstractmethod
 
 from simulation.path_finder import PathFinder
@@ -27,11 +26,11 @@ class Creature(Entity):
         self._path_finder = PathFinder()
 
     @abstractmethod
-    def target_interaction_handler(self, map_object: Map, target_point: Point):
+    def target_interaction_handler(self, map_object: "Map", target_point: "Point"):
         """Обработка взаимодействия с целью при достижении"""
         pass
 
-    def make_move(self, map_object: Map) -> None:
+    def make_move(self, map_object: "Map") -> None:
         """Общая логика перемещения для всех существ"""
         resource_type = self.get_target_resource()
         path: list[Point] | None = self.find_path_to_resource(map_object, resource_type)
@@ -65,7 +64,7 @@ class Creature(Entity):
         """Возвращает класс ресурса, за которым охотится существо"""
         return self.target
 
-    def find_path_to_resource(self, map_object: Map, resource: type[Entity]) -> list[Point] | None:
+    def find_path_to_resource(self, map_object: "Map", resource: type[Entity]) -> list["Point"] | None:
         """
         Поиск пути к ресурсу с использованием PathFinder
         :param map_object: Объект карты
@@ -89,7 +88,7 @@ class Herbivore(Creature):
     def __init__(self, speed: int, health: int):
         super().__init__(speed, health, Grass)
 
-    def target_interaction_handler(self, map_object: Map, target_point: Point):
+    def target_interaction_handler(self, map_object: "Map", target_point: "Point"):
         """Обработка взаимодействия с целью при достижении"""
         map_object.remove_entity(target_point)
 
@@ -102,7 +101,7 @@ class Predator(Creature):
         super().__init__(speed, health, Herbivore)
         self.ap = attack_power
 
-    def target_interaction_handler(self, map_object: Map, target_point: Point):
+    def target_interaction_handler(self, map_object: "Map", target_point: "Point"):
         """Хищник атакует травоядное"""
         target_entity = map_object.get_entity(target_point)
         if isinstance(target_entity, Herbivore):

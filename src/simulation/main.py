@@ -1,7 +1,7 @@
 from pathlib import Path
 from threading import Thread
 
-from condition import Status
+from condition import Status, Condition
 from simulation.actions import Actions, SpawnEntity, ResourceBalancer, FindDeadEntity, MoveEntity
 from simulation.config import load_config
 from simulation.entities import Entity, Rock, Tree, Grass, Herbivore, Predator
@@ -39,6 +39,8 @@ def main():
     except FileNotFoundError:
         config = load_config(Path("config.example.toml"))
 
+    condition = Condition()
+
     world = Map(config.world.width, config.world.height)
 
     rendering_simbols: dict[type[Entity], str] = {
@@ -50,7 +52,7 @@ def main():
     }
     default_symbol: str = config.icons.default
 
-    renderer = Renderer(world, rendering_simbols, default_symbol)
+    renderer = Renderer(world, rendering_simbols, default_symbol, condition)
 
     rock_factory = RockFactory()
     tree_factory = TreeFactory()
@@ -83,7 +85,7 @@ def main():
             MoveEntity(world)
         ]
 
-    world_simulation = Simulation(init_actions, turn_actions, world, renderer)
+    world_simulation = Simulation(init_actions, turn_actions, world, renderer, condition)
 
     simulation = Thread(target=launcher, args=(world_simulation, renderer))
     simulation.start()

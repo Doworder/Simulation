@@ -1,6 +1,7 @@
 import time
 from threading import Thread, Event
 
+from condition import Condition, Status
 from simulation.actions import Actions
 from simulation.renderer import Renderer
 from simulation.world_map import Map
@@ -22,8 +23,10 @@ class Simulation:
             init_actions: list[Actions],
             turn_actions: list[Actions],
             world_map: Map,
-            renderer: Renderer
+            renderer: Renderer,
+            state: Condition
     ):
+        self.state = state
         self._map = world_map
         self._counter = 0
         self._event = Event()
@@ -32,6 +35,7 @@ class Simulation:
         self._init_actions = init_actions
         self._turn_actions = turn_actions
         self._renderer = renderer
+
 
         for action in self._init_actions:
             action()
@@ -43,11 +47,16 @@ class Simulation:
 
         self._counter += 1
 
+        if self.state.status == Status.INIT:
+            self.state.status = Status.STEP
+
+        self._renderer.render(self._counter)
+
+
     def _next_turn_loop(self):
         while self._simulation_flag:
             self._event.wait()
             self.next_turn()
-            self._renderer.started()
             time.sleep(1)
 
 
@@ -56,15 +65,23 @@ class Simulation:
         self._event.set()
         self._tread = Thread(target=self._next_turn_loop, daemon=True)
         self._tread.start()
+        self.state.status = Status.START
 
     def pause_simulation(self):
         """ - приостановить бесконечный цикл симуляции и рендеринга"""
         self._event.clear()
+        self.state.status = Status.PAUSE
+        self._renderer.render(self._counter)
+
 
     def resume_simulation(self):
         """продолжить цикл симуляции и рендеринга"""
         self._event.set()
+        self.state.status = Status.START
 
     def stop_simulation(self):
         """остановить бесконечный цикл симуляции и рендеринга"""
         self._simulation_flag = False
+        self.state.status = Status.STOP
+        self._renderer.render(self._counter)
+

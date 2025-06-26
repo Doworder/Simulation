@@ -1,6 +1,7 @@
 from pathlib import Path
 from threading import Thread
 
+from condition import Status
 from simulation.actions import Actions, SpawnEntity, ResourceBalancer, FindDeadEntity, MoveEntity
 from simulation.config import load_config
 from simulation.entities import Entity, Rock, Tree, Grass, Herbivore, Predator
@@ -13,7 +14,6 @@ from simulation.world_map import Map
 def launcher(process: Simulation, renderer: Renderer) -> None:
     renderer.preview()
     while True:
-        pause_flag = False
         user_input = input().lower()
         match user_input:
             case "e":
@@ -21,17 +21,13 @@ def launcher(process: Simulation, renderer: Renderer) -> None:
                 break
 
             case "p":
-                pause_flag = True
                 process.pause_simulation()
-                renderer.paused()
 
             case "n":
                 process.next_turn()
-                renderer.nexted()
 
             case "s":
-                if pause_flag:
-                    pause_flag = False
+                if process.state.status == Status.PAUSE:
                     process.resume_simulation()
                 else:
                     process.start_simulation()

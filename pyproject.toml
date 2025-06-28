@@ -14,5 +14,8 @@ description = "My second pet project from Sergey Zhukov's roadmap"
 readme = "README.md"
 license = { text = "MIT" }
 
+[project.scripts]
+simulation = "simulation.main:main"
+
 [tool.setuptools]
 package-dir = {"" = "src"}

@@ -69,6 +69,7 @@ def main():
         ]
 
     turn_actions: list[Actions] = [
+            FindDeadEntity(world),
             ResourceBalancer(
                 world,
                 Grass,
@@ -81,7 +82,6 @@ def main():
                 SpawnEntity(config.balance_herbivore.count, world, herbivore_factory),
                 config.balance_herbivore.remaining
             ),
-            FindDeadEntity(world),
             MoveEntity(world)
         ]
 

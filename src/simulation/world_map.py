@@ -28,6 +28,9 @@ class Map:
                 return coord
         return None
 
+    def get_resource(self, resource_type: type[Entity]) -> list[tuple[Point, Entity]]:
+        return [(point, entity) for point, entity in self._entities.items() if isinstance(entity, resource_type)]
+
     def add_entity(self, coordinates: Point, entity: Entity) -> None:
         self._entities[coordinates] = entity
 

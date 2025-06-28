@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from simulation.path_finder import PathFinder
+from simulation.path_finder import PathFinderBFS, PathFinderAstar
 
 
 class Entity(ABC): ...
@@ -23,7 +23,7 @@ class Creature(Entity):
         self.speed = speed
         self.hp = health
         self.target = target
-        self._path_finder = PathFinder()
+        self._path_finder = PathFinderBFS()
 
     @abstractmethod
     def target_interaction_handler(self, map_object: "Map", target_point: "Point"):
@@ -66,7 +66,7 @@ class Creature(Entity):
 
     def find_path_to_resource(self, map_object: "Map", resource: type[Entity]) -> list["Point"] | None:
         """
-        Поиск пути к ресурсу с использованием PathFinder
+        Поиск пути к ресурсу с использованием алгоритма поиска пути
         :param map_object: Объект карты
         :param resource: Тип искомого ресурса
         :return: Список точек пути или None

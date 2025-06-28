@@ -1,7 +1,7 @@
 import time
 from threading import Thread, Event
 
-from condition import Condition, Status
+from simulation.condition import Condition, Status
 from simulation.actions import Actions
 from simulation.renderer import Renderer
 from simulation.world_map import Map

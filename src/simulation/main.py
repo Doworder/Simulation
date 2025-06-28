@@ -1,7 +1,7 @@
 from pathlib import Path
 from threading import Thread
 
-from condition import Status, Condition
+from simulation.condition import Status, Condition
 from simulation.actions import Actions, SpawnEntity, ResourceBalancer, FindDeadEntity, MoveEntity
 from simulation.config import load_config
 from simulation.entities import Entity, Rock, Tree, Grass, Herbivore, Predator

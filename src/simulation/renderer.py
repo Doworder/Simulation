@@ -1,6 +1,6 @@
 from os import system, name
 
-from condition import Condition, Status
+from simulation.condition import Condition, Status
 from simulation.coordinates import Point
 
 

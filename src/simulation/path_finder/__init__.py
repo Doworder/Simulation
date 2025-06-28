@@ -3,4 +3,4 @@ __all__ = [
     'PathFinderAstar'
 ]
 
-from simulation.path_finder import PathFinderBFS, PathFinderAstar
+from simulation.path_finder.path_finder import PathFinderBFS, PathFinderAstar

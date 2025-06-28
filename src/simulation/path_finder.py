@@ -5,7 +5,7 @@ from typing import Deque
 from simulation.coordinates import Point
 
 
-class PathFinder:
+class PathFinderBFS:
     """Класс для поиска пути с использованием алгоритма BFS"""
 
     def __call__(

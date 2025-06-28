@@ -7,7 +7,6 @@ class Map:
         self.width = width
         self.height = height
         self._entities: dict[Point, Entity] = {}
-        self._creatures: set = set()
 
     def get_entity(self, coordinates: Point) -> Entity | None:
         return self._entities.get(coordinates)
@@ -21,10 +20,10 @@ class Map:
     def get_creatures(self) -> list[Creature]:
         return [creature for creature in self.get_all_entities() if isinstance(creature, Creature)]
 
-    def get_entity_point(self, value: Entity) -> Point | None:
-        """Возвращает значение координат объекта value из map_object"""
+    def get_entity_point(self, target_entity: Entity) -> Point | None:
+        """Возвращает значение координат объекта target_entity из map_object"""
         for coord, entity in self._entities.items():
-            if entity == value:
+            if entity == target_entity:
                 return coord
         return None
 

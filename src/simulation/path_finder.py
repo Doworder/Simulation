@@ -1,4 +1,3 @@
-from __future__ import annotations
 from collections import deque
 from typing import Deque
 
@@ -11,8 +10,8 @@ class PathFinderBFS:
     def __call__(
             self,
             start_point: Point,
-            map_object: Map,
-            resource_type: type[Entity],
+            map_object: "Map",
+            resource_type: type["Entity"],
             width: int,
             height: int
     ) -> list[Point] | None:
@@ -44,7 +43,7 @@ class PathFinderBFS:
             if entity and current_point != start_point:
                 continue
 
-            neighbors = PathFinder._get_neighbors(
+            neighbors = self._get_neighbors(
                 current_point,
                 current_path,
                 width,
